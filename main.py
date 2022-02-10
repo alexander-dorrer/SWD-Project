@@ -45,11 +45,10 @@ class Game:
     def draw_hud(self):
         pass
 
+    def update_hud(self):
+        pass
+
     def main_menu(self):
-        # start_btn_img = pygame.image.load("Assets/start_btn.png").convert_alpha()
-        # exit_btn_img = pygame.image.load("Assets/exit_btn.png").convert_alpha()
-        # display_surface.blit(start_btn_img, (200, 400))
-        # display_surface.blit(exit_btn_img, (900, 400))
         pass
 
     def pause_game(self):
@@ -86,7 +85,6 @@ class Tower:
 
 # Create game object
 my_game = Game()
-my_game.main_menu()
 my_game.draw_map()
 
 # The main game loop
