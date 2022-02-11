@@ -63,7 +63,7 @@ class Game:
     def pause_game(self):
         pass
 
-    def quit_game(self,event_list):
+    def quit_game(self,event):
         width = display_surface.get_width()
         height = display_surface.get_height()
         color = (255, 255, 255)
@@ -71,12 +71,11 @@ class Game:
         text = smallfont.render('quit', True, color)
         mouse = pygame.mouse.get_pos()
         display_surface.blit(text, (width-70, height-40))
-        for event in event_list:
-            if event.type == pygame.MOUSEBUTTONUP:
-                if width-70 <= mouse[0] <= width and height-40 <= mouse[1] <= height:
-                    pygame.quit()
-                    exit()
-
+        # pygame.draw.rect(display_surface, 000, [height-40, height, width-70, width])    # Rahmen um Quit Button
+        if event.type == pygame.MOUSEBUTTONUP:
+            if width-70 <= mouse[0] <= width and height-40 <= mouse[1] <= height:
+                pygame.quit()
+                exit()
 
     def start_round(self):
         pass
@@ -87,10 +86,9 @@ class Player:
     def __init__(self):
         pass
 
-    def build_tower(self, event_list):
-        for event in event_list:
-            if event.type == pygame.MOUSEBUTTONUP:
-                Tower.position = pygame.mouse.get_pos()
+    def build_tower(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            Tower.position = pygame.mouse.get_pos()
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -112,17 +110,13 @@ class Tower:
 # Create game object
 my_game = Game(0, 0)
 my_game.draw_map()
-my_player = Player
-
-
 # The main game loop
 while True:
     pygame.init()
     event_list = pygame.event.get()
     for event in event_list:
-        Game.quit_game(Game, event_list)
-        # elif event.type == pygame.MOUSEBUTTONUP:
-        #     Player.build_tower(my_player, event_list)
+        Game.quit_game(Game, event)
+        Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
 # Game.update(event_list)
