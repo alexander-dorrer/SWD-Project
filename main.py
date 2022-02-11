@@ -63,6 +63,21 @@ class Game:
     def pause_game(self):
         pass
 
+    def quit_game(self,event_list):
+        width = display_surface.get_width()
+        height = display_surface.get_height()
+        color = (255, 255, 255)
+        smallfont = pygame.font.SysFont('Corbel', 35)
+        text = smallfont.render('quit', True, color)
+        mouse = pygame.mouse.get_pos()
+        display_surface.blit(text, (width-70, height-40))
+        for event in event_list:
+            if event.type == pygame.MOUSEBUTTONUP:
+                if width-70 <= mouse[0] <= width and height-40 <= mouse[1] <= height:
+                    pygame.quit()
+                    exit()
+
+
     def start_round(self):
         pass
 
@@ -98,16 +113,16 @@ class Tower:
 my_game = Game(0, 0)
 my_game.draw_map()
 my_player = Player
+
+
 # The main game loop
 while True:
     pygame.init()
     event_list = pygame.event.get()
     for event in event_list:
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            break
-        elif event.type == pygame.MOUSEBUTTONUP:
-            Player.build_tower(my_player, event_list)
-        pygame.display.update()
-        clock.tick(FPS)
-    # Game.update(event_list)
+        Game.quit_game(Game, event_list)
+        # elif event.type == pygame.MOUSEBUTTONUP:
+        #     Player.build_tower(my_player, event_list)
+    pygame.display.update()
+    clock.tick(FPS)
+# Game.update(event_list)
