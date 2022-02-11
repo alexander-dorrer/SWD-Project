@@ -8,7 +8,7 @@ pygame.init()
 WINDOW_WIDTH = 1400
 WINDOW_HEIGHT = 900
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("Tower Defense lol")
+pygame.display.set_caption("Tower Defense")
 
 # Set FPS and Clock
 FPS = 60
@@ -95,19 +95,19 @@ class Tower:
 
 
 # Create game object
-my_game = Game()
+my_game = Game(0, 0)
 my_game.draw_map()
-
+my_player = Player
 # The main game loop
-run = True
-while run:
+while True:
+    pygame.init()
     event_list = pygame.event.get()
     for event in event_list:
         if event.type == pygame.QUIT:
-            run = False
-
+            pygame.quit()
+            break
+        elif event.type == pygame.MOUSEBUTTONUP:
+            Player.build_tower(my_player, event_list)
         pygame.display.update()
         clock.tick(FPS)
-
-pygame.quit()
-
+    # Game.update(event_list)
