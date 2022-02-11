@@ -17,10 +17,19 @@ clock = pygame.time.Clock()
 
 class Game:
     """Class to control Gameplay"""
-    def __init__(self):
+    def __init__(self, x, y):
+        # self.rect = self.image.get_rect(center = (x, y))
+        # self.clicked = False
+        # self.image = pygame.surface
         pass
 
-    def update(self):
+    def update(self, event_list):
+        # for event in event_list:
+        #     if event.type == pygame.MOUSEBUTTONDOWN:
+        #         if self.rect.collidepoint(event.pos):
+        #             self.clicked = not self.clicked
+        #
+        # self.image = self.click_image if self.clicked else self.original_image
         pass
 
     def draw_map(self):
@@ -63,8 +72,10 @@ class Player:
     def __init__(self):
         pass
 
-    def build_turret(self):
-        pass
+    def build_tower(self, event_list):
+        for event in event_list:
+            if event.type == pygame.MOUSEBUTTONUP:
+                Tower.position = pygame.mouse.get_pos()
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -90,7 +101,8 @@ my_game.draw_map()
 # The main game loop
 run = True
 while run:
-    for event in pygame.event.get():
+    event_list = pygame.event.get()
+    for event in event_list:
         if event.type == pygame.QUIT:
             run = False
 
