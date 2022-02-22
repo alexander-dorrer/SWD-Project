@@ -18,18 +18,9 @@ clock = pygame.time.Clock()
 class Game:
     """Class to control Gameplay"""
     def __init__(self, x, y):
-        # self.rect = self.image.get_rect(center = (x, y))
-        # self.clicked = False
-        # self.image = pygame.surface
         pass
 
     def update(self, event_list):
-        # for event in event_list:
-        #     if event.type == pygame.MOUSEBUTTONDOWN:
-        #         if self.rect.collidepoint(event.pos):
-        #             self.clicked = not self.clicked
-        #
-        # self.image = self.click_image if self.clicked else self.original_image
         pass
 
     def draw_map(self):
@@ -74,7 +65,7 @@ class Game:
                     event_lists = pygame.event.get()
                     mouse = pygame.mouse.get_pos()
                     for events in event_lists:
-                        Game.quit_game(Game, mouse, events)
+                        Game.quit_game(self, mouse, events)
                         if events.type == pygame.KEYUP:
                             if events.key == pygame.K_ESCAPE:
                                 running = False
@@ -131,8 +122,7 @@ while True:
     event_list = pygame.event.get()
     for event in event_list:
         Game.main_menu(Game, event)
-        # Game.quit_game(Game, event)
         Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
-# Game.update(event_list)
+
