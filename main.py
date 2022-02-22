@@ -57,25 +57,40 @@ class Game:
     def update_hud(self):
         pass
 
-    def main_menu(self):
-        pass
-
-    def pause_game(self):
-        pass
-
-    def quit_game(self,event):
+    def main_menu(self, event):
         width = display_surface.get_width()
         height = display_surface.get_height()
         color = (255, 255, 255)
         smallfont = pygame.font.SysFont('Corbel', 35)
-        text = smallfont.render('quit', True, color)
-        mouse = pygame.mouse.get_pos()
-        display_surface.blit(text, (width-70, height-40))
-        # pygame.draw.rect(display_surface, 000, [height-40, height, width-70, width])    # Rahmen um Quit Button
-        if event.type == pygame.MOUSEBUTTONUP:
-            if width-70 <= mouse[0] <= width and height-40 <= mouse[1] <= height:
+        text = smallfont.render('Quit', True, color)
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                pygame.draw.rect(display_surface, 000,
+                                 ((width / 2 - 70, height / 2 - 40), (64, 34)))  # Schwarzer Hintergrund für Quit-Button
+                display_surface.blit(text, (width / 2 - 70, height / 2 - 40))
+                pygame.display.update()
+                running = True
+                while running:  # Loop for mouse event tracking
+                    event_lists = pygame.event.get()
+                    mouse = pygame.mouse.get_pos()
+                    for events in event_lists:
+                        Game.quit_game(Game, mouse, events)
+                        if events.type == pygame.KEYUP:
+                            if events.key == pygame.K_ESCAPE:
+                                running = False
+                                Game.draw_map(self)
+                                pygame.display.update()
+
+    def pause_game(self):
+        pass
+
+    def quit_game(self, mouse, event):
+        width = display_surface.get_width()
+        height = display_surface.get_height()
+        if event.type == pygame.MOUSEBUTTONUP:  # Click on Quit
+            if width/2-70 <= mouse[0] <= width/2+70 and height/2-40 <= mouse[1] <= height/2+40:
                 pygame.quit()
-                exit()
+                exit("Mousebutton Exit")
 
     def start_round(self):
         pass
@@ -115,7 +130,8 @@ while True:
     pygame.init()
     event_list = pygame.event.get()
     for event in event_list:
-        Game.quit_game(Game, event)
+        Game.main_menu(Game, event)
+        # Game.quit_game(Game, event)
         Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
