@@ -125,4 +125,3 @@ while True:
         Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
-
