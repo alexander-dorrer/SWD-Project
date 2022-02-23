@@ -43,23 +43,23 @@ class Game:
                     current_tile += 1
 
     def draw_hud(self):
-        width = display_surface.get_width()
-        height = display_surface.get_height()
-        pygame.draw.rect(display_surface, (65, 100, 190), ((0, height-60), (width, 60)))
+        playbutton = pygame.image.load("Assets/play.png")
+        pausebutton = pygame.image.load("Assets/pause.png")
+        pygame.draw.rect(display_surface, (65, 100, 190), ((0, WINDOW_HEIGHT-60), (WINDOW_WIDTH, 60)))
+        display_surface.blit(pygame.transform.scale(pausebutton, (60, 60)), (WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60))
+        display_surface.blit(pygame.transform.scale(playbutton, (60, 60)), (WINDOW_WIDTH-120, WINDOW_HEIGHT-60))
 
     def update_hud(self):
         pass
 
     def main_menu(self, event):
-        width = display_surface.get_width()
-        height = display_surface.get_height()
         color = (255, 255, 255)
         smallfont = pygame.font.SysFont('Corbel', 35)
         text = smallfont.render('Quit', True, color)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                pygame.draw.rect(display_surface, (65, 100, 190), ((width / 2 - 32, height / 2 - 16), (64, 32)))  # Hintergrund für Quit-Button
-                display_surface.blit(text, (width / 2 - 32, height / 2 - 16))
+                pygame.draw.rect(display_surface, (65, 100, 190), ((WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16), (64, 32)))  # Hintergrund für Quit-Button
+                display_surface.blit(text, (WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16))
                 pygame.display.update()
                 running = True
                 while running:  # Loop for mouse event tracking
@@ -73,19 +73,31 @@ class Game:
                                 Game.draw_map(self)
                                 pygame.display.update()
 
-    def pause_game(self):
-        pass
+    def pause_game(self, event):
+        mouse = pygame.mouse.get_pos()
+        pausebutton = pygame.image.load("Assets/pause.png")
+        if event.type == pygame.MOUSEBUTTONUP:  # Click on Pause
+            if WINDOW_WIDTH-60 <= mouse[0] <= WINDOW_WIDTH and WINDOW_HEIGHT-60 <= mouse[1] <= WINDOW_HEIGHT:
+                my_game.draw_hud()
+                pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH-60, WINDOW_HEIGHT-60), (60, 60)))
+                display_surface.blit(pygame.transform.scale(pausebutton, (60, 60)), (WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60))
+                pygame.display.update()
 
     def quit_game(self, mouse, event):
-        width = display_surface.get_width()
-        height = display_surface.get_height()
         if event.type == pygame.MOUSEBUTTONUP:  # Click on Quit
-            if width/2-32 <= mouse[0] <= width/2+32 and height/2-16 <= mouse[1] <= height/2+16:     # Check ob Maus auf Koordinaten von Quit
+            if WINDOW_WIDTH/2-32 <= mouse[0] <= WINDOW_WIDTH/2+32 and WINDOW_HEIGHT/2-16 <= mouse[1] <= WINDOW_HEIGHT/2+16:     # Check ob Maus auf Koordinaten von Quit
                 pygame.quit()
                 exit("Mousebutton Exit")
 
-    def start_round(self):
-        pass
+    def start_round(self, event):
+        mouse = pygame.mouse.get_pos()
+        playbutton = pygame.image.load("Assets/play.png")
+        if event.type == pygame.MOUSEBUTTONUP:  # Click on Play
+            if WINDOW_WIDTH-120 <= mouse[0] <= WINDOW_WIDTH-60 and WINDOW_HEIGHT - 60 <= mouse[1] <= WINDOW_HEIGHT:
+                my_game.draw_hud()
+                pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60), (60, 60)))
+                display_surface.blit(pygame.transform.scale(playbutton, (60, 60)), (WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60))
+                pygame.display.update()
 
 
 class Player:
@@ -120,10 +132,11 @@ my_game.draw_map()
 my_game.draw_hud()
 # The main game loop
 while True:
-    pygame.init()
     event_list = pygame.event.get()
     for event in event_list:
         my_game.main_menu(event)
+        my_game.pause_game(event)
+        my_game.start_round(event)
         Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
