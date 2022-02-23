@@ -6,7 +6,7 @@ pygame.init()
 
 # Set display window
 WINDOW_WIDTH = 1400
-WINDOW_HEIGHT = 900
+WINDOW_HEIGHT = 970
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("Tower Defense")
 
@@ -17,10 +17,10 @@ clock = pygame.time.Clock()
 
 class Game:
     """Class to control Gameplay"""
-    def __init__(self, x, y):
+    def __init__(self):
         pass
 
-    def update(self, event_list):
+    def update(self):
         pass
 
     def draw_map(self):
@@ -43,7 +43,9 @@ class Game:
                     current_tile += 1
 
     def draw_hud(self):
-        pass
+        width = display_surface.get_width()
+        height = display_surface.get_height()
+        pygame.draw.rect(display_surface, (65, 100, 190), ((0, height-60), (width, 60)))
 
     def update_hud(self):
         pass
@@ -56,9 +58,8 @@ class Game:
         text = smallfont.render('Quit', True, color)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                pygame.draw.rect(display_surface, 000,
-                                 ((width / 2 - 70, height / 2 - 40), (64, 34)))  # Schwarzer Hintergrund für Quit-Button
-                display_surface.blit(text, (width / 2 - 70, height / 2 - 40))
+                pygame.draw.rect(display_surface, (65, 100, 190), ((width / 2 - 32, height / 2 - 16), (64, 32)))  # Hintergrund für Quit-Button
+                display_surface.blit(text, (width / 2 - 32, height / 2 - 16))
                 pygame.display.update()
                 running = True
                 while running:  # Loop for mouse event tracking
@@ -67,7 +68,7 @@ class Game:
                     for events in event_lists:
                         Game.quit_game(self, mouse, events)
                         if events.type == pygame.KEYUP:
-                            if events.key == pygame.K_ESCAPE:
+                            if events.key == pygame.K_ESCAPE:   # Wenn Esc. gedrückt wird
                                 running = False
                                 Game.draw_map(self)
                                 pygame.display.update()
@@ -79,7 +80,7 @@ class Game:
         width = display_surface.get_width()
         height = display_surface.get_height()
         if event.type == pygame.MOUSEBUTTONUP:  # Click on Quit
-            if width/2-70 <= mouse[0] <= width/2+70 and height/2-40 <= mouse[1] <= height/2+40:
+            if width/2-32 <= mouse[0] <= width/2+32 and height/2-16 <= mouse[1] <= height/2+16:     # Check ob Maus auf Koordinaten von Quit
                 pygame.quit()
                 exit("Mousebutton Exit")
 
@@ -114,14 +115,15 @@ class Tower:
 
 
 # Create game object
-my_game = Game(0, 0)
+my_game = Game()
 my_game.draw_map()
+my_game.draw_hud()
 # The main game loop
 while True:
     pygame.init()
     event_list = pygame.event.get()
     for event in event_list:
-        Game.main_menu(Game, event)
+        my_game.main_menu(event)
         Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
