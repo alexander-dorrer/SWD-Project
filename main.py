@@ -45,9 +45,9 @@ class Game:
     def draw_hud(self):
         playbutton = pygame.image.load("Assets/play.png")
         pausebutton = pygame.image.load("Assets/pause.png")
-        pygame.draw.rect(display_surface, (65, 100, 190), ((0, WINDOW_HEIGHT-60), (WINDOW_WIDTH, 60)))
+        pygame.draw.rect(display_surface, (65, 100, 190), ((0, WINDOW_HEIGHT - 60), (WINDOW_WIDTH, 60)))
         display_surface.blit(pygame.transform.scale(pausebutton, (60, 60)), (WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60))
-        display_surface.blit(pygame.transform.scale(playbutton, (60, 60)), (WINDOW_WIDTH-120, WINDOW_HEIGHT-60))
+        display_surface.blit(pygame.transform.scale(playbutton, (60, 60)), (WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60))
 
     def update_hud(self):
         pass
@@ -58,42 +58,44 @@ class Game:
         text = smallfont.render('Quit', True, color)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                pygame.draw.rect(display_surface, (65, 100, 190), ((WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16), (64, 32)))  # Hintergrund für Quit-Button
+                pygame.draw.rect(display_surface, (65, 100, 190), ((WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16), (64, 32)))  # background  for Quit-Button
                 display_surface.blit(text, (WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16))
                 pygame.display.update()
                 running = True
-                while running:  # Loop for mouse event tracking
+                while running:  # Loop for menu
                     event_lists = pygame.event.get()
-                    mouse = pygame.mouse.get_pos()
+                    mouse_menu = pygame.mouse.get_pos()  # extra mousetracking (for menu)
                     for events in event_lists:
-                        Game.quit_game(self, mouse, events)
-                        if events.type == pygame.KEYUP:
-                            if events.key == pygame.K_ESCAPE:   # Wenn Esc. gedrückt wird
-                                running = False
+                        if events.type == pygame.MOUSEBUTTONUP:
+                            Game.quit_game(self, mouse_menu, events, True)
+                        elif events.type == pygame.KEYUP:
+                            if events.key == pygame.K_ESCAPE:  # Esc. is pressed
+                                running = False  # break loop
                                 Game.draw_map(self)
                                 pygame.display.update()
 
     def pause_game(self, event):
-        mouse = pygame.mouse.get_pos()
         pausebutton = pygame.image.load("Assets/pause.png")
         if event.type == pygame.MOUSEBUTTONUP:  # Click on Pause
-            if WINDOW_WIDTH-60 <= mouse[0] <= WINDOW_WIDTH and WINDOW_HEIGHT-60 <= mouse[1] <= WINDOW_HEIGHT:
+            if WINDOW_WIDTH - 60 <= mouse[0] <= WINDOW_WIDTH and WINDOW_HEIGHT - 60 <= mouse[1] <= WINDOW_HEIGHT:
                 my_game.draw_hud()
-                pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH-60, WINDOW_HEIGHT-60), (60, 60)))
+                pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60), (60, 60)))
                 display_surface.blit(pygame.transform.scale(pausebutton, (60, 60)), (WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60))
                 pygame.display.update()
 
-    def quit_game(self, mouse, event):
-        if event.type == pygame.MOUSEBUTTONUP:  # Click on Quit
-            if WINDOW_WIDTH/2-32 <= mouse[0] <= WINDOW_WIDTH/2+32 and WINDOW_HEIGHT/2-16 <= mouse[1] <= WINDOW_HEIGHT/2+16:     # Check ob Maus auf Koordinaten von Quit
+    def quit_game(self, mouse_menu, event, is_menu):
+        if is_menu:
+            if WINDOW_WIDTH / 2 - 32 <= mouse_menu[0] <= WINDOW_WIDTH / 2 + 32 and WINDOW_HEIGHT / 2 - 16 <= mouse_menu[1] <= WINDOW_HEIGHT / 2 + 16:   # Click on Quit
                 pygame.quit()
                 exit("Mousebutton Exit")
+        if event.type == pygame.QUIT:  # Click on X (top right corner)
+            pygame.quit()
+            exit("X Exit")
 
     def start_round(self, event):
-        mouse = pygame.mouse.get_pos()
         playbutton = pygame.image.load("Assets/play.png")
         if event.type == pygame.MOUSEBUTTONUP:  # Click on Play
-            if WINDOW_WIDTH-120 <= mouse[0] <= WINDOW_WIDTH-60 and WINDOW_HEIGHT - 60 <= mouse[1] <= WINDOW_HEIGHT:
+            if WINDOW_WIDTH - 120 <= mouse[0] <= WINDOW_WIDTH - 60 and WINDOW_HEIGHT - 60 <= mouse[1] <= WINDOW_HEIGHT:
                 my_game.draw_hud()
                 pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60), (60, 60)))
                 display_surface.blit(pygame.transform.scale(playbutton, (60, 60)), (WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60))
@@ -133,10 +135,12 @@ my_game.draw_hud()
 # The main game loop
 while True:
     event_list = pygame.event.get()
+    mouse = pygame.mouse.get_pos()
     for event in event_list:
         my_game.main_menu(event)
         my_game.pause_game(event)
         my_game.start_round(event)
+        my_game.quit_game(mouse, event, False)
         Player.build_tower(Player, event)
     pygame.display.update()
     clock.tick(FPS)
