@@ -13,6 +13,8 @@ pygame.display.set_caption("Tower Defense")
 # Set FPS and Clock
 FPS = 60
 clock = pygame.time.Clock()
+start_timer = False
+timer_started = 0
 
 
 class Game:
@@ -54,12 +56,12 @@ class Game:
 
     def main_menu(self, event):
         color = (255, 255, 255)
-        smallfont = pygame.font.SysFont('Corbel', 35)
+        smallfont = pygame.font.SysFont('Comic Sans MS', 30)
         text = smallfont.render('Quit', True, color)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                pygame.draw.rect(display_surface, (65, 100, 190), ((WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16), (64, 32)))  # background  for Quit-Button
-                display_surface.blit(text, (WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 16))
+                pygame.draw.rect(display_surface, (65, 100, 190), ((WINDOW_WIDTH / 2 - 36, WINDOW_HEIGHT / 2 - 22), (72, 40)))  # background  for Quit-Button
+                display_surface.blit(text, (WINDOW_WIDTH / 2 - 32, WINDOW_HEIGHT / 2 - 26))
                 pygame.display.update()
                 running = True
                 while running:  # Loop for menu
@@ -81,11 +83,10 @@ class Game:
                 my_game.draw_hud()
                 pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60), (60, 60)))
                 display_surface.blit(pygame.transform.scale(pausebutton, (60, 60)), (WINDOW_WIDTH - 60, WINDOW_HEIGHT - 60))
-                pygame.display.update()
 
     def quit_game(self, mouse_menu, event, is_menu):
         if is_menu:
-            if WINDOW_WIDTH / 2 - 32 <= mouse_menu[0] <= WINDOW_WIDTH / 2 + 32 and WINDOW_HEIGHT / 2 - 16 <= mouse_menu[1] <= WINDOW_HEIGHT / 2 + 16:   # Click on Quit
+            if WINDOW_WIDTH / 2 - 36 <= mouse_menu[0] <= WINDOW_WIDTH / 2 + 36 and WINDOW_HEIGHT / 2 - 26 <= mouse_menu[1] <= WINDOW_HEIGHT / 2 + 14:   # Click on Quit
                 pygame.quit()
                 exit("Mousebutton Exit")
         if event.type == pygame.QUIT:  # Click on X (top right corner)
@@ -99,8 +100,22 @@ class Game:
                 my_game.draw_hud()
                 pygame.draw.rect(display_surface, (64, 191, 81), ((WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60), (60, 60)))
                 display_surface.blit(pygame.transform.scale(playbutton, (60, 60)), (WINDOW_WIDTH - 120, WINDOW_HEIGHT - 60))
-                pygame.display.update()
+                my_game.timer(True)
 
+    def timer(self, start):
+        smallfont = pygame.font.SysFont('Comic Sans MS', 30)
+        color = (255, 255, 255)
+        if start:
+            global start_time
+            start_time = pygame.time.get_ticks()
+        try:
+            passed_time = pygame.time.get_ticks() - start_time
+            timer = smallfont.render(str(passed_time / 1000)+' s', True, color)
+            Game.draw_map(self)
+            display_surface.blit(timer, (WINDOW_WIDTH - 110, -5))
+        except:
+            no_timer = smallfont.render('no timer', True, color)
+            display_surface.blit(no_timer, (WINDOW_WIDTH - 120, -5))
 
 class Player:
     """Player Class"""
@@ -141,6 +156,7 @@ while True:
         my_game.pause_game(event)
         my_game.start_round(event)
         my_game.quit_game(mouse, event, False)
-        Player.build_tower(Player, event)
+        # Player.build_tower(Player, event)
+    my_game.timer(False)
     pygame.display.update()
     clock.tick(FPS)
