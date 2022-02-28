@@ -1,5 +1,6 @@
 import pygame
 from map import level1
+from enemy import Enemy
 
 # Initialize pygame
 pygame.init()
@@ -160,3 +161,4 @@ while True:
     my_game.timer(False)
     pygame.display.update()
     clock.tick(FPS)
+
