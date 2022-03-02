@@ -34,8 +34,8 @@ while True:
     mouse = pygame.mouse.get_pos()
     for event in event_list:
         my_game.main_menu(event)
-        my_game.pause_game(event)
-        my_game.start_round(event)
+        my_game.pause_game(event, mouse)
+        my_game.start_round(event, mouse)
         my_game.quit_game(mouse, event, False)
         # Player.build_tower(Player, event)
     my_game.timer(False)

@@ -66,11 +66,11 @@ class Game:
                                 Game.draw_map(self)
                                 pygame.display.update()
 
-    def pause_game(self, event):
+    def pause_game(self, event, mouse):
         pausebutton = pygame.image.load("Assets/pause.png")
         if event.type == pygame.MOUSEBUTTONUP:  # Click on Pause
             if self.width - 60 <= mouse[0] <= self.width and self.height - 60 <= mouse[1] <= self.height:
-                my_game.draw_hud()
+                self.draw_hud()
                 pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 60, self.height - 60), (60, 60)))
                 self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
 
@@ -83,14 +83,14 @@ class Game:
             pygame.quit()
             exit("X Exit")
 
-    def start_round(self, event):
+    def start_round(self, event, mouse):
         playbutton = pygame.image.load("Assets/play.png")
         if event.type == pygame.MOUSEBUTTONUP:  # Click on Play
             if self.width - 120 <= mouse[0] <= self.width - 60 and self.height - 60 <= mouse[1] <= self.height:
-                my_game.draw_hud()
+                self.draw_hud()
                 pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 120, self.height - 60), (60, 60)))
                 self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
-                my_game.timer(True)
+                self.timer(True)
 
     def timer(self, start):
         smallfont = pygame.font.SysFont('Comic Sans MS', 30)
