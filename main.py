@@ -31,6 +31,7 @@ class Game:
         grass_tile = pygame.image.load("Assets/grass_tile.png")
         sand_tile = pygame.image.load("Assets/sand_tile.png")
         water_tile = pygame.image.load("Assets/water_tile.png")
+        enemy_goal = pygame.image.load('Assets/Towers&Projectiles/Tower_12/Tower_12.png')
         current_row = -1
         for row in level1:
             current_row += 1
@@ -42,6 +43,9 @@ class Game:
                 elif tile == 1:
                     display_surface.blit(pygame.transform.scale(water_tile, (70, 70)), (current_tile * 70, current_row * 70))
                     current_tile += 1
+                elif tile == 4:
+                    display_surface.blit(pygame.transform.scale(sand_tile, (70, 70)), (current_tile * 70, current_row * 70))
+                    display_surface.blit(pygame.transform.scale(enemy_goal, (65, 65)), (current_tile * 70, current_row * 70))
                 else:
                     display_surface.blit(pygame.transform.scale(sand_tile, (70, 70)), (current_tile * 70, current_row * 70))
                     current_tile += 1
