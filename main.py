@@ -123,22 +123,9 @@ class Game:
             no_timer = smallfont.render('no timer', True, color)
             display_surface.blit(no_timer, (WINDOW_WIDTH - 120, -5))
 
-class Player:
-    """Player Class"""
-    def __init__(self):
-        pass
-
-    def build_tower(self, event):
-        if event.type == pygame.MOUSEBUTTONUP:
-            Tower.position = pygame.mouse.get_pos()
 
 
-class Tower:
-    def __init__(self):
-        pass
 
-    def shoot_on_target(self):
-        pass
 
 
 # Create game object
