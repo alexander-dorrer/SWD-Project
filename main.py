@@ -1,3 +1,4 @@
+from faulthandler import disable
 import pygame
 from map import level1
 from enemy import Enemy
@@ -128,14 +129,6 @@ class Player:
             Tower.position = pygame.mouse.get_pos()
 
 
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
-        pass
-
-    def update(self):
-        pass
-
-
 class Tower:
     def __init__(self):
         pass
@@ -148,6 +141,10 @@ class Tower:
 my_game = Game()
 my_game.draw_map()
 my_game.draw_hud()
+
+my_enemy = Enemy(display_surface)
+my_enemy.draw_enemy()
+
 # The main game loop
 while True:
     event_list = pygame.event.get()
