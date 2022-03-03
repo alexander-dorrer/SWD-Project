@@ -18,8 +18,13 @@ my_menu = Game(display_surface, menu_width, menu_height)
 window = my_menu.game_menu()
 display_surface = pygame.display.set_mode((window[0], window[1]))
 my_game = Game(display_surface, window[0], window[1])
-my_game.draw_map()
 my_game.draw_hud()
+
+# Create Map
+my_map = Map()
+my_level = my_map.level1
+my_map.draw_map(my_level, display_surface)
+spawn_point = my_map.get_spawn_point(my_map.level1)
 
 # Set FPS and Clock
 FPS = 60
@@ -30,11 +35,7 @@ start_timer = False
 my_game = Game(display_surface, window[0], window[1])
 my_game.draw_hud()
 
-# Create Map
-my_map = Map()
-my_level = my_map.level1
-my_map.draw_map(my_level, display_surface)
-spawn_point = my_map.get_spawn_point(my_map.level1)
+
 
 # Create Enemy
 my_enemy = Enemy(display_surface, my_map.level1_path)
@@ -50,7 +51,7 @@ while True:
         my_game.pause_game(event, mouse)
         my_game.start_round(event, mouse)
         my_game.quit_game(event, False)
-        my_game.quit_game(mouse, event, False)
+        my_game.quit_game(event, False)
         # Player.build_tower(Player, event)
 
         if event.type == MOVEENEMY:
