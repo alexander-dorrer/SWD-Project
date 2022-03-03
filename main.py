@@ -58,7 +58,6 @@ while True:
             my_map.draw_map(my_level, display_surface)
             my_enemy.move()
 
-
         if event.type == MOVEENEMY:
             my_map.draw_map(my_level, display_surface)
             my_enemy.move()

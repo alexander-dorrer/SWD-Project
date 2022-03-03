@@ -48,12 +48,10 @@ class Game:
                     for events in event_lists:
                         if events.type == pygame.MOUSEBUTTONUP:
                             if self.width / 2 - 120 <= mouse_menu[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse_menu[1] <= self.height / 2 + 63:  # Click on Quit
-                                self.quit_game(self, events, True)
+                                self.quit_game(events, True)
                         elif events.type == pygame.KEYUP:
                             if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                                 running = False  # break loop
-                                map.draw_map()
-                                pygame.display.update()
 
     def game_menu(self):
         self.draw_game_menu()
