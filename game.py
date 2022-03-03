@@ -18,17 +18,28 @@ class Game:
         self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
 
+    def draw_game_menu(self):
+        pygame.draw.rect(self.window, (65, 100, 190),
+                         ((0, 0), (240, 252)))  # background  for Buttons
+        color = (255, 255, 255)
+        smallfont_main_menu = pygame.font.SysFont('Comic Sans MS', 44)
+        main_menu_text = smallfont_main_menu.render('Main Menu', True, color)
+        smallfont_options = pygame.font.SysFont('Comic Sans MS', 56)
+        options_text = smallfont_options.render('Options', True, color)
+        self.window.blit(options_text, (15, 20))
+        self.window.blit(main_menu_text, (10, self.height - 230))
+        exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
+        self.window.blit(pygame.transform.scale(exitbutton, (240, 126)), (0, self.height - 126))
+        pygame.display.update()
+
     def update_hud(self):
         pass
 
     def main_menu(self, event):
-        color = (255, 255, 255)
-        smallfont = pygame.font.SysFont('Comic Sans MS', 30)
-        text = smallfont.render('Quit', True, color)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                pygame.draw.rect(self.window, (65, 100, 190), ((self.width / 2 - 36, self.height / 2 - 22), (72, 40)))  # background  for Quit-Button
-                self.window.blit(text, (self.width / 2 - 32, self.height / 2 - 26))
+                exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
+                self.window.blit(pygame.transform.scale(exitbutton, (240, 126)), (self.width / 2 - 120, self.height / 2 - 63))
                 pygame.display.update()
                 running = True
                 while running:  # Loop for menu
@@ -36,12 +47,33 @@ class Game:
                     mouse_menu = pygame.mouse.get_pos()  # extra mousetracking (for menu)
                     for events in event_lists:
                         if events.type == pygame.MOUSEBUTTONUP:
-                            Game.quit_game(self, mouse_menu, events, True)
+                            if self.width / 2 - 120 <= mouse_menu[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse_menu[1] <= self.height / 2 + 63:  # Click on Quit
+                                Game.quit_game(self, events, True)
                         elif events.type == pygame.KEYUP:
                             if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                                 running = False  # break loop
                                 Game.draw_map(self)
                                 pygame.display.update()
+
+    def game_menu(self):
+        self.draw_game_menu()
+        running = True
+        while running:
+            event_list = pygame.event.get()
+            mouse = pygame.mouse.get_pos()
+            for event in event_list:
+                if event.type == pygame.MOUSEBUTTONUP:
+                    if 0 <= mouse[0] <= 240 and 252 <= mouse[1] <= self.height:  # Click on Quit
+                        self.quit_game(event, True)
+                    elif 0 <= mouse[0] <= 240 and 126 <= mouse[1] <= 252:  # Click on Main Menu
+                        window_height = 970
+                        window_width = 1400
+                        return window_width, window_height
+                    elif 0 <= mouse[0] <= 240 and 0 <= mouse[1] <= 126:  # Click on Options
+                        window_height = 970
+                        window_width = 1400
+                        return window_width, window_height
+                self.quit_game(event, False)
 
     def pause_game(self, event, mouse):
         pausebutton = pygame.image.load("Assets/pause.png")
@@ -51,11 +83,10 @@ class Game:
                 pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 60, self.height - 60), (60, 60)))
                 self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
 
-    def quit_game(self, mouse_menu, event, is_menu):
+    def quit_game(self, event, is_menu):
         if is_menu:
-            if self.width / 2 - 36 <= mouse_menu[0] <= self.width / 2 + 36 and self.height / 2 - 26 <= mouse_menu[1] <= self.height / 2 + 14:   # Click on Quit
-                pygame.quit()
-                exit("Mousebutton Exit")
+            pygame.quit()
+            exit("Mousebutton Exit")
         if event.type == pygame.QUIT:  # Click on X (top right corner)
             pygame.quit()
             exit("X Exit")
