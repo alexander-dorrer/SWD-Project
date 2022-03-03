@@ -1,4 +1,3 @@
-from faulthandler import disable
 import pygame
 from map import Map
 from enemy import Enemy
@@ -36,12 +35,13 @@ my_game = Game(display_surface, window[0], window[1])
 my_game.draw_hud()
 
 
-
 # Create Enemy
 my_enemy = Enemy(display_surface, my_map.level1_path)
 my_enemy.draw_enemy(spawn_point[0], spawn_point[1])
 MOVEENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(MOVEENEMY, 150)
+pygame.time.set_timer(MOVEENEMY, 100)
+
+
 # The main game loop
 while True:
     event_list = pygame.event.get()

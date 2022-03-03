@@ -66,12 +66,12 @@ class Game:
                     if 0 <= mouse[0] <= 240 and 252 <= mouse[1] <= self.height:  # Click on Quit
                         self.quit_game(event, True)
                     elif 0 <= mouse[0] <= 240 and 126 <= mouse[1] <= 252:  # Click on Main Menu
-                        window_height = 970
-                        window_width = 1400
+                        window_height = 840
+                        window_width = 1200
                         return window_width, window_height
                     elif 0 <= mouse[0] <= 240 and 0 <= mouse[1] <= 126:  # Click on Options
-                        window_height = 970
-                        window_width = 1400
+                        window_height = 840
+                        window_width = 1200
                         return window_width, window_height
                 self.quit_game(event, False)
 
