@@ -1,5 +1,6 @@
 import pygame
 
+
 class Game:
     """Class to control Gameplay"""
     def __init__(self, window, width, height):
@@ -9,7 +10,6 @@ class Game:
 
     def update(self):
         pass
-
 
     def draw_hud(self):
         playbutton = pygame.image.load("Assets/play.png")
@@ -107,7 +107,6 @@ class Game:
         try:
             passed_time = pygame.time.get_ticks() - start_time
             timer = smallfont.render(str(passed_time / 1000)+' s', True, color)
-            Game.draw_map(self)
             self.window.blit(timer, (self.width - 110, -5))
         except:
             no_timer = smallfont.render('no timer', True, color)
