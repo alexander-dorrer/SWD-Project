@@ -1,3 +1,4 @@
+from faulthandler import disable
 import pygame
 from map import Map
 from enemy import Enemy
@@ -26,8 +27,14 @@ clock = pygame.time.Clock()
 start_timer = False
 
 # Create game object
-my_enemy = Enemy(display_surface)
-my_enemy.draw_enemy()
+my_game = Game(display_surface, window[0], window[1])
+my_game.draw_hud()
+
+# Create Map
+my_map = Map()
+my_level = my_map.level1
+my_map.draw_map(my_level, display_surface)
+spawn_point = my_map.get_spawn_point(my_map.level1)
 
 # Create Enemy
 my_enemy = Enemy(display_surface, my_map.level1_path)
@@ -44,6 +51,12 @@ while True:
         my_game.start_round(event, mouse)
         my_game.quit_game(event, False)
         my_game.quit_game(mouse, event, False)
+        # Player.build_tower(Player, event)
+
+        if event.type == MOVEENEMY:
+            my_map.draw_map(my_level, display_surface)
+            my_enemy.move()
+
 
         if event.type == MOVEENEMY:
             my_map.draw_map(my_level, display_surface)
