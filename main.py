@@ -2,6 +2,7 @@ from faulthandler import disable
 import pygame
 from map import level1
 from enemy import Enemy
+from Tower import Tower
 
 # Initialize pygame
 pygame.init()
@@ -122,6 +123,8 @@ class Game:
         except:
             no_timer = smallfont.render('no timer', True, color)
             display_surface.blit(no_timer, (WINDOW_WIDTH - 120, -5))
+
+
 
 class Player:
     """Player Class"""
