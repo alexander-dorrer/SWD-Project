@@ -1,5 +1,4 @@
 import pygame
-from map import level1
 
 class Game:
     """Class to control Gameplay"""
@@ -11,28 +10,6 @@ class Game:
     def update(self):
         pass
 
-    def draw_map(self):
-        grass_tile = pygame.image.load("Assets/grass_tile.png")
-        sand_tile = pygame.image.load("Assets/sand_tile.png")
-        water_tile = pygame.image.load("Assets/water_tile.png")
-        enemy_goal = pygame.image.load('Assets/Towers&Projectiles/Tower_12/Tower_12.png')
-        current_row = -1
-        for row in level1:
-            current_row += 1
-            current_tile = 0
-            for tile in row:
-                if tile == 0:
-                    self.window.blit(pygame.transform.scale(grass_tile, (70, 70)), (current_tile * 70, current_row * 70))
-                    current_tile += 1
-                elif tile == 1:
-                    self.window.blit(pygame.transform.scale(water_tile, (70, 70)), (current_tile * 70, current_row * 70))
-                    current_tile += 1
-                elif tile == 4:
-                    self.window.blit(pygame.transform.scale(sand_tile, (70, 70)), (current_tile * 70, current_row * 70))
-                    self.window.blit(pygame.transform.scale(enemy_goal, (65, 65)), (current_tile * 70, current_row * 70))
-                else:
-                    self.window.blit(pygame.transform.scale(sand_tile, (70, 70)), (current_tile * 70, current_row * 70))
-                    current_tile += 1
 
     def draw_hud(self):
         playbutton = pygame.image.load("Assets/play.png")
