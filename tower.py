@@ -18,6 +18,7 @@ class Tower:
         self.range = 200
 
         pass
+
     def place(self):
         Mouse_x, Mouse_y = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -25,10 +26,13 @@ class Tower:
             self.x = Mouse_x
             self.y = Mouse_y
         pass
+
     def sell(self):
         pass
+
     def shoot(self):
         pass
+
     def animate(self):
         pass
 
