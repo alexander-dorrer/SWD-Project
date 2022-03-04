@@ -20,7 +20,7 @@ class Game:
 
     def draw_game_menu(self):
         pygame.draw.rect(self.window, (65, 100, 190),
-                         ((0, 0), (240, 252)))  # background  for Buttons
+                         ((0, 0), (self.width, self.height * 2 / 3)))  # background  for Buttons
         color = (255, 255, 255)
         smallfont_main_menu = pygame.font.SysFont('Comic Sans MS', 44)
         main_menu_text = smallfont_main_menu.render('Main Menu', True, color)
@@ -29,7 +29,7 @@ class Game:
         self.window.blit(options_text, (15, 20))
         self.window.blit(main_menu_text, (10, self.height - 230))
         exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
-        self.window.blit(pygame.transform.scale(exitbutton, (240, 126)), (0, self.height - 126))
+        self.window.blit(pygame.transform.scale(exitbutton, (self.width, self.height / 3)), (0, self.height * 2 / 3))
         pygame.display.update()
 
     def update_hud(self):
@@ -61,13 +61,13 @@ class Game:
             mouse = pygame.mouse.get_pos()
             for event in event_list:
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if 0 <= mouse[0] <= 240 and 252 <= mouse[1] <= self.height:  # Click on Quit
+                    if 0 <= mouse[0] <= self.width and self.height * 2 / 3 <= mouse[1] <= self.height:  # Click on Quit
                         self.quit_game(event, True)
-                    elif 0 <= mouse[0] <= 240 and 126 <= mouse[1] <= 252:  # Click on Main Menu
+                    elif 0 <= mouse[0] <= self.width and self.height * 1 / 3 <= mouse[1] <= self.height * 2 / 3:  # Click on Main Menu
                         window_height = 840
                         window_width = 1200
                         return window_width, window_height
-                    elif 0 <= mouse[0] <= 240 and 0 <= mouse[1] <= 126:  # Click on Options
+                    elif 0 <= mouse[0] <= self.width and 0 <= mouse[1] <= self.height * 1 / 3:  # Click on Options
                         window_height = 840
                         window_width = 1200
                         return window_width, window_height

@@ -10,8 +10,9 @@ pygame.init()
 pygame.display.set_caption("Tower Defense")
 
 # Set Menu Display
-menu_width = 240
-menu_height = 378
+menu_size = pygame.display.get_desktop_sizes()
+menu_width = menu_size[0][0] / 8
+menu_height = menu_size[0][1] / 2.85
 display_surface = pygame.display.set_mode((menu_width, menu_height))
 my_menu = Game(display_surface, menu_width, menu_height)
 
