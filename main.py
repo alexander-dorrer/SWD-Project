@@ -10,16 +10,15 @@ pygame.init()
 pygame.display.set_caption("Tower Defense")
 
 # Set Menu Display
-menu_size = pygame.display.get_desktop_sizes()
-menu_width = menu_size[0][0] / 8
-menu_height = menu_size[0][1] / 2.85
-display_surface = pygame.display.set_mode((menu_width, menu_height))
-my_menu = Game(display_surface, menu_width, menu_height)
+width = 1200
+height = 840
+display_surface = pygame.display.set_mode((width, height))
+my_menu = Game(display_surface, width, height)
+my_menu.game_menu()
 
 # Set Game Display
-window = my_menu.game_menu()
-display_surface = pygame.display.set_mode((window[0], window[1]))
-my_game = Game(display_surface, window[0], window[1])
+display_surface = pygame.display.set_mode((width, height))
+my_game = Game(display_surface, width, height)
 my_game.draw_hud()
 
 # Create Map
@@ -34,7 +33,7 @@ clock = pygame.time.Clock()
 start_timer = False
 
 # Create game object
-my_game = Game(display_surface, window[0], window[1])
+my_game = Game(display_surface, width, height)
 my_game.draw_hud()
 
 # Create Enemy

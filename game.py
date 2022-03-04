@@ -18,19 +18,32 @@ class Game:
         self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
 
-    def draw_game_menu(self):
-        pygame.draw.rect(self.window, (65, 100, 190),
-                         ((0, 0), (self.width, self.height * 2 / 3)))  # background  for Buttons
-        color = (255, 255, 255)
-        smallfont_main_menu = pygame.font.SysFont('Comic Sans MS', 44)
-        main_menu_text = smallfont_main_menu.render('Main Menu', True, color)
-        smallfont_options = pygame.font.SysFont('Comic Sans MS', 56)
-        options_text = smallfont_options.render('Options', True, color)
-        self.window.blit(options_text, (15, 20))
-        self.window.blit(main_menu_text, (10, self.height - 230))
-        exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
-        self.window.blit(pygame.transform.scale(exitbutton, (self.width, self.height / 3)), (0, self.height * 2 / 3))
-        pygame.display.update()
+    def draw_game_menu(self, depth_window):
+        if depth_window == 1:
+            pygame.draw.rect(self.window, (65, 100, 190),
+                             ((self.width / 2 - 120, self.height / 2 - 189), (240, 2 * 126)))  # background  for Buttons
+            color = (255, 255, 255)
+            smallfont_main_menu = pygame.font.SysFont('Comic Sans MS', 44)
+            main_menu_text = smallfont_main_menu.render('Main Menu', True, color)
+            smallfont_options = pygame.font.SysFont('Comic Sans MS', 56)
+            options_text = smallfont_options.render('Options', True, color)
+            self.window.blit(options_text, (self.width / 2 - 120 + 10, self.height / 2 - 189 + 15))     # Options Button Text
+            self.window.blit(main_menu_text, (self.width / 2 - 120 + 10, self.height / 2 - 63 + 15))    # Main Menu Text
+            exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
+            self.window.blit(pygame.transform.scale(exitbutton, (240, 378 / 3)), (self.width / 2 - 120, self.height / 2 + 63))
+            pygame.display.update()
+        elif depth_window == 2:
+            pygame.draw.rect(self.window, (65, 100, 190),
+                             ((self.width / 2 - 120, self.height / 2 - 189), (240, 3 * 126)))  # background  for level choice
+            color = (255, 255, 255)
+            smallfont_size_menu = pygame.font.SysFont('Comic Sans MS', 30)
+            size_menu_text = smallfont_size_menu.render('Level Choice!', True, color)
+            self.window.blit(size_menu_text, (self.width / 2 - 120 + 10, self.height / 2 - 189 + 15))
+            for levels in range(6):     # levels choice print (6 levels example)
+                smallfont = pygame.font.SysFont('Comic Sans MS', 30)
+                text = smallfont.render('Level ' + str(levels + 1), True, color)
+                self.window.blit(text, (self.width / 2 - 120 + 10, self.height / 2 - 126 + levels / 6 * 315))
+            pygame.display.update()
 
     def update_hud(self):
         pass
@@ -54,23 +67,29 @@ class Game:
                                 running = False  # break loop
 
     def game_menu(self):
-        self.draw_game_menu()
-        running = True
-        while running:
+        self.draw_game_menu(1)
+        running = 1
+        while running == 1:     # main game menu
             event_list = pygame.event.get()
             mouse = pygame.mouse.get_pos()
             for event in event_list:
                 if event.type == pygame.MOUSEBUTTONUP:
-                    if 0 <= mouse[0] <= self.width and self.height * 2 / 3 <= mouse[1] <= self.height:  # Click on Quit
+                    if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 + 63 <= mouse[1] <= self.height / 2 + 189:  # Click on Quit
                         self.quit_game(event, True)
-                    elif 0 <= mouse[0] <= self.width and self.height * 1 / 3 <= mouse[1] <= self.height * 2 / 3:  # Click on Main Menu
-                        window_height = 840
-                        window_width = 1200
-                        return window_width, window_height
-                    elif 0 <= mouse[0] <= self.width and 0 <= mouse[1] <= self.height * 1 / 3:  # Click on Options
-                        window_height = 840
-                        window_width = 1200
-                        return window_width, window_height
+                    elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse[1] <= self.height / 2 + 63:  # Click on Main Menu
+                        running = 2
+                        self.draw_game_menu(2)
+                    elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 189 <= mouse[1] <= self.height / 2 - 63:  # Click on Options
+                        return
+                self.quit_game(event, False)
+        while running == 2:     # levels choice menu
+            event_list = pygame.event.get()
+            mouse = pygame.mouse.get_pos()
+            for event in event_list:
+                if event.type == pygame.MOUSEBUTTONUP:
+                    for levels in range(6):
+                        if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 126 + levels / 6 * 315 <= mouse[1] <= self.height / 2 - 126 + (levels + 1) / 6 * 315:  # Click on Quit
+                            running = 0
                 self.quit_game(event, False)
 
     def pause_game(self, event, mouse):
@@ -106,8 +125,11 @@ class Game:
             start_time = pygame.time.get_ticks()
         try:
             passed_time = pygame.time.get_ticks() - start_time
-            timer = smallfont.render(str(passed_time / 1000)+' s', True, color)
+            timer = smallfont.render(str(int(passed_time / 1000))+' s', True, color)
             self.window.blit(timer, (self.width - 110, -5))
+            pygame.display.update()
         except:
             no_timer = smallfont.render('no timer', True, color)
             self.window.blit(no_timer, (self.width - 120, -5))
+            pygame.display.update()
+
