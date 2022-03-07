@@ -40,7 +40,7 @@ my_game.draw_hud()
 my_enemy = Enemy(display_surface, my_map.level1_path)
 my_enemy.draw_enemy(spawn_point[0], spawn_point[1])
 MOVEENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(MOVEENEMY, 150)
+pygame.time.set_timer(MOVEENEMY, int((1000/FPS)*6))
 
 # The main game loop
 while True:
@@ -51,18 +51,9 @@ while True:
         my_game.pause_game(event, mouse)
         my_game.start_round(event, mouse)
         my_game.quit_game(event, False)
-        my_game.quit_game(event, False)
-        # Player.build_tower(Player, event)
-
         if event.type == MOVEENEMY:
             my_map.draw_map(my_level, display_surface)
             my_enemy.move()
-
-        if event.type == MOVEENEMY:
-            my_map.draw_map(my_level, display_surface)
-            my_enemy.move()
-
-    my_game.timer(False)
-    pygame.display.update()
+        my_game.timer(False)
+        pygame.display.update()
     clock.tick(FPS)
-
