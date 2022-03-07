@@ -51,46 +51,45 @@ class Game:
     def main_menu(self, event):
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
-                self.window.blit(pygame.transform.scale(exitbutton, (240, 126)), (self.width / 2 - 120, self.height / 2 - 63))
-                pygame.display.update()
-                running = True
-                while running:  # Loop for menu
-                    event_lists = pygame.event.get()
-                    mouse_menu = pygame.mouse.get_pos()  # extra mousetracking (for menu)
-                    for events in event_lists:
-                        if events.type == pygame.MOUSEBUTTONUP:
-                            if self.width / 2 - 120 <= mouse_menu[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse_menu[1] <= self.height / 2 + 63:  # Click on Quit
-                                self.quit_game(events, True)
-                        elif events.type == pygame.KEYUP:
-                            if events.key == pygame.K_ESCAPE:  # Esc. is pressed
-                                running = False  # break loop
+                self.game_menu(False)
 
-    def game_menu(self):
+    def game_menu(self, start_menu):
         self.draw_game_menu(1)
+        menu = True
         running = 1
-        while running == 1:     # main game menu
-            event_list = pygame.event.get()
-            mouse = pygame.mouse.get_pos()
-            for event in event_list:
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 + 63 <= mouse[1] <= self.height / 2 + 189:  # Click on Quit
-                        self.quit_game(event, True)
-                    elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse[1] <= self.height / 2 + 63:  # Click on Main Menu
-                        running = 2
-                        self.draw_game_menu(2)
-                    elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 189 <= mouse[1] <= self.height / 2 - 63:  # Click on Options
-                        return
-                self.quit_game(event, False)
-        while running == 2:     # levels choice menu
-            event_list = pygame.event.get()
-            mouse = pygame.mouse.get_pos()
-            for event in event_list:
-                if event.type == pygame.MOUSEBUTTONUP:
-                    for levels in range(6):
-                        if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 126 + levels / 6 * 315 <= mouse[1] <= self.height / 2 - 126 + (levels + 1) / 6 * 315:  # Click on Quit
-                            running = 0
-                self.quit_game(event, False)
+        while menu:
+            while running == 1:  # main game menu
+                event_list = pygame.event.get()
+                mouse = pygame.mouse.get_pos()
+                for event in event_list:
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 + 63 <= mouse[1] <= self.height / 2 + 189:  # Click on Quit
+                            self.quit_game(event, True)
+                        elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse[1] <= self.height / 2 + 63:  # Click on Main Menu
+                            running = 2
+                            self.draw_game_menu(2)
+                        elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 189 <= mouse[1] <= self.height / 2 - 63:  # Click on Options
+                            return
+                    elif event.type == pygame.KEYUP and not start_menu:
+                        if event.key == pygame.K_ESCAPE:  # Esc. is pressed
+                            running = 0  # break loop
+                            menu = False
+                    self.quit_game(event, False)
+            while running == 2:  # levels choice menu
+                event_list = pygame.event.get()
+                mouse = pygame.mouse.get_pos()
+                for event in event_list:
+                    if event.type == pygame.MOUSEBUTTONUP:
+                        for levels in range(6):
+                            if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 126 + levels / 6 * 315 <= mouse[1] <= self.height / 2 - 126 + (levels + 1) / 6 * 315:  # Click on Quit
+                                # implement actions on choice of level
+                                running = 0
+                                menu = False
+                    elif event.type == pygame.KEYUP:
+                        if event.key == pygame.K_ESCAPE:  # Esc. is pressed
+                            running = 1  # break loop
+                            self.draw_game_menu(1)
+                    self.quit_game(event, False)
 
     def pause_game(self, event, mouse):
         pausebutton = pygame.image.load("Assets/pause.png")

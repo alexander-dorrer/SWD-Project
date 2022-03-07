@@ -14,7 +14,7 @@ width = 1200
 height = 840
 display_surface = pygame.display.set_mode((width, height))
 my_menu = Game(display_surface, width, height)
-my_menu.game_menu()
+my_menu.game_menu(True)
 
 # Set Game Display
 display_surface = pygame.display.set_mode((width, height))
