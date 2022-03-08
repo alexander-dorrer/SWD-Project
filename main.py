@@ -40,7 +40,7 @@ my_game.draw_hud()
 my_enemy = Enemy(display_surface, my_map.level1_path)
 my_enemy.draw_enemy(spawn_point[0], spawn_point[1])
 MOVEENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(MOVEENEMY, int((1000/FPS)*6))
+pygame.time.set_timer(MOVEENEMY, int((1000/FPS*7)))
 
 # The main game loop
 while True:

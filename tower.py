@@ -1,9 +1,9 @@
 import pygame
 import math
-pygame.init()
 
 tower_base_image = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
 tower_head_image = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
+
 
 class Tower:
     def __init__(self,x,y):
@@ -20,11 +20,11 @@ class Tower:
         pass
 
     def place(self):
-        Mouse_x, Mouse_y = pygame.mouse.get_pos()
+        mouse_x, mouse_y = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
         if click:
-            self.x = Mouse_x
-            self.y = Mouse_y
+            self.x = mouse_x
+            self.y = mouse_y
         pass
 
     def sell(self):

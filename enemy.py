@@ -47,13 +47,11 @@ class Enemy:
                     self.y += 4
                     self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                             (self.width, self.height)), (self.x, self.y))
-
             elif current_position[1] != self.next_step[1]:
                 if current_position[1] > self.next_step[1]:
                     self.x -= 4
                     self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                             (self.width, self.height)), (self.x, self.y))
-
                 elif current_position[1] < self.next_step[1]:
                     self.x += 4
                     self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
