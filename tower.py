@@ -1,6 +1,7 @@
 import pygame
 import math
 
+
 tower_base_image = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
 tower_head_image = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
 
@@ -20,6 +21,7 @@ class Tower:
         pass
 
     def place(self,event):
+        font = pygame.font.Font('freesansbold.ttf', 32)
         mouse = pygame.mouse.get_pos()
         if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse [1] <= 840:
             chosen = True
@@ -30,15 +32,23 @@ class Tower:
                     if events.type == pygame.MOUSEBUTTONUP:
                         pygame.display.update()
                         mouse_tower = list(mouse_tower)  #hier musss noch das Bild zentriert werden
-                        print(mouse_tower)
                         position_x = (mouse_tower[0] % 60)
                         mouse_tower[0] -= ((position_x +30)-60)
                         position_y = (mouse_tower[1] % 60)
                         mouse_tower[1] -= ((position_y +30)-60)
                         mouse_tower = tuple(mouse_tower)
-                        self.positions.append(mouse_tower)
-                        print(mouse_tower)
-                        chosen = False
+
+                        if mouse_tower not in self.positions:
+
+                            self.positions.append(mouse_tower)
+                            print(mouse_tower)
+                            chosen = False
+
+                        else:
+                            error_message = font.render('Turm hier nicht platzierbar!!!',True,(255,0,0))
+                            self.window.blit(error_message,mouse_tower)
+
+
 
         pass
     def draw_towers(self):
