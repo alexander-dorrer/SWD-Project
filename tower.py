@@ -37,21 +37,17 @@ class Tower:
                         position_y = (mouse_tower[1] % 60)
                         mouse_tower[1] -= ((position_y +30)-60)
                         mouse_tower = tuple(mouse_tower)
-
                         if mouse_tower not in self.positions:
-
                             self.positions.append(mouse_tower)
-                            print(mouse_tower)
                             chosen = False
-
                         else:
-                            error_message = font.render('Turm hier nicht platzierbar!!!',True,(255,0,0))
-                            self.window.blit(error_message,mouse_tower)
+                            error_message = font.render('Error! Turm hier nicht platzierbar !!!',True,(255,0,0))
+                            self.window.blit(error_message,(mouse_tower[0]-100,mouse_tower[1]-32))
 
 
 
         pass
-    def draw_towers(self):
+    def draw_towers(self,event):
         for tower in self.positions:
             tower_base_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
             tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
@@ -59,6 +55,11 @@ class Tower:
                                  (tower[0]-30, tower[1]-30))
             self.window.blit(pygame.transform.scale(tower_head_img, (self.width, self.height)),
                                  (tower[0]-30, tower[1]-30))
+            mouse_position = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONUP and (tower[0] -30) <= mouse_position[0] <= (tower[0] + 30) and  (tower[1] -30) <= mouse_position [1] <= (tower[1] + 30):
+                surface = pygame.Surface((self.range *4,self.range*4),pygame.SRCALPHA,32)
+                pygame.draw.circle(surface,(50,50,50,100),(self.range,self.range),self.range,0)
+                self.window.blit(surface,(tower[0] - self.range, tower[1] - self.range))
             pygame.display.update()
     def sell(self):
         pass

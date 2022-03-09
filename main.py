@@ -54,7 +54,7 @@ while True:
         my_game.start_round(event, mouse)
         my_game.quit_game(event, False)
         my_tower.place(event)
-        my_tower.draw_towers()
+        my_tower.draw_towers(event)
         if event.type == MOVEENEMY:
             my_map.draw_map(my_level, display_surface)
             my_enemy.move()
