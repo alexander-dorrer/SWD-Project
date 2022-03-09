@@ -37,16 +37,12 @@ class Tower:
                         position_y = (mouse_tower[1] % 60)
                         mouse_tower[1] -= ((position_y +30)-60)
                         mouse_tower = tuple(mouse_tower)
-
                         if mouse_tower not in self.positions:
-
                             self.positions.append(mouse_tower)
-                            print(mouse_tower)
                             chosen = False
-
                         else:
-                            error_message = font.render('Turm hier nicht platzierbar!!!',True,(255,0,0))
-                            self.window.blit(error_message,mouse_tower)
+                            error_message = font.render('Error! Turm hier nicht platzierbar !!!',True,(255,0,0))
+                            self.window.blit(error_message,(mouse_tower[0]-100,mouse_tower[1]-32))
 
 
 
