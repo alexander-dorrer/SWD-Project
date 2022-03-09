@@ -29,7 +29,15 @@ class Tower:
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP:
                         pygame.display.update()
+                        mouse_tower = list(mouse_tower)  #hier musss noch das Bild zentriert werden
+                        print(mouse_tower)
+                        position_x = (mouse_tower[0] % 60)
+                        mouse_tower[0] -= ((position_x +30)-60)
+                        position_y = (mouse_tower[1] % 60)
+                        mouse_tower[1] -= ((position_y +30)-60)
+                        mouse_tower = tuple(mouse_tower)
                         self.positions.append(mouse_tower)
+                        print(mouse_tower)
                         chosen = False
 
         pass
