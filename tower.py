@@ -15,6 +15,7 @@ class Tower:
 
     def place(self, event):
         mouse = pygame.mouse.get_pos()
+        font = pygame.font.Font('freesansbold.ttf', 32)
         if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840:
             chosen = True
             while chosen:
@@ -23,8 +24,18 @@ class Tower:
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP:
                         pygame.display.update()
-                        self.positions.append(mouse_tower)
-                        chosen = False
+                        mouse_tower = list(mouse_tower)  #hier musss noch das Bild zentriert werden
+                        position_x = (mouse_tower[0] % 60)
+                        mouse_tower[0] -= ((position_x +30)-60)
+                        position_y = (mouse_tower[1] % 60)
+                        mouse_tower[1] -= ((position_y +30)-60)
+                        mouse_tower = tuple(mouse_tower)
+                        if mouse_tower not in self.positions:
+                            self.positions.append(mouse_tower)
+                            chosen = False
+                        else:
+                            error_message = font.render('Error! Turm hier nicht platzierbar !!!',True,(255,0,0))
+                            self.window.blit(error_message,(mouse_tower[0]-100,mouse_tower[1]-32))
 
     def draw_towers(self):
         for tower in self.positions:
@@ -48,16 +59,3 @@ class Tower:
     def animate(self):
         pass
 
-
-class Projectile(object):   # Why object?
-
-    def __init__(self, x, y, radius, color, facing):
-        self.x = x
-        self.y = y
-        self.radius = radius
-        self.color = color
-        self.facing = facing
-        self.vel = 8 * facing
-
-    def draw(self, win):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
