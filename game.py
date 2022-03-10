@@ -15,9 +15,13 @@ class Game:
     def draw_hud(self):
         playbutton = pygame.image.load("Assets/play.png")
         pausebutton = pygame.image.load("Assets/pause.png")
+        tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
+        tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
         pygame.draw.rect(self.window, (65, 100, 190), ((0, self.height - 60), (self.width, 60)))
         self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
+        self.window.blit(pygame.transform.scale(tower_base, (60, 60)), (0, self.height - 60))
+        self.window.blit(pygame.transform.scale(tower_head, (60, 60)), (0, self.height - 60))
 
     def draw_game_menu(self, depth_window, start_menu):
         if start_menu:

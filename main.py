@@ -44,6 +44,7 @@ pygame.time.set_timer(MOVEENEMY, int((1000/FPS*7)))
 
 # Create Tower
 my_tower = Tower(display_surface)
+
 # The main game loop
 while True:
     event_list = pygame.event.get()
@@ -57,6 +58,7 @@ while True:
         my_tower.draw_towers()
         if event.type == MOVEENEMY:
             my_map.draw_map(my_level, display_surface)
+            my_tower.draw_towers()
             my_enemy.move()
         my_game.timer(False)
         pygame.display.update()
