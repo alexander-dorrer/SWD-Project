@@ -1,4 +1,5 @@
 import pygame
+from game import Game
 
 
 class Tower:
@@ -24,18 +25,22 @@ class Tower:
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP:
                         pygame.display.update()
-                        mouse_tower = list(mouse_tower)  #hier musss noch das Bild zentriert werden
+                        mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
                         position_x = (mouse_tower[0] % 60)
-                        mouse_tower[0] -= ((position_x +30)-60)
+                        mouse_tower[0] -= ((position_x + 30) - 60)
                         position_y = (mouse_tower[1] % 60)
-                        mouse_tower[1] -= ((position_y +30)-60)
+                        mouse_tower[1] -= ((position_y + 30) - 60)
                         mouse_tower = tuple(mouse_tower)
                         if mouse_tower not in self.positions:
                             self.positions.append(mouse_tower)
                             chosen = False
                         else:
-                            error_message = font.render('Error! Turm hier nicht platzierbar !!!',True,(255,0,0))
-                            self.window.blit(error_message,(mouse_tower[0]-100,mouse_tower[1]-32))
+                            error_message = font.render('Error! Turm hier nicht platzierbar !!!', True, (255, 0, 0))
+                            self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
+                    elif events.type == pygame.KEYUP:
+                        if events.key == pygame.K_ESCAPE:               # Esc. is pressed
+                            chosen = False                              # break loop
+                    Game.quit_game(self, events, False)
 
     def draw_towers(self):
         for tower in self.positions:
@@ -58,4 +63,3 @@ class Tower:
 
     def animate(self):
         pass
-

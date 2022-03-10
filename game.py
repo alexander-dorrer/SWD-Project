@@ -28,21 +28,24 @@ class Game:
             pygame.draw.rect(self.window, (65, 100, 190),
                              ((0, 0), (self.width, self.height)))                           # Full screen blue
         if depth_window == 1:
-            pygame.draw.rect(self.window, (0, 0, 0),
-                             ((self.width / 2 - 120, self.height / 2 - 189), (240, 126)))   # border Options
+            # pygame.draw.rect(self.window, (0, 0, 0),
+            #                  ((self.width / 2 - 120, self.height / 2 - 189), (240, 126)))   # border Options
             pygame.draw.rect(self.window, (0, 0, 0),
                              ((self.width / 2 - 120, self.height / 2 - 63), (240, 126)))    # border Main Menu
-            pygame.draw.rect(self.window, (65, 100, 190),
-                             ((self.width / 2 - 118, self.height / 2 - 187), (236, 124)))   # blue of Options
+            # pygame.draw.rect(self.window, (65, 100, 190),
+            #                  ((self.width / 2 - 118, self.height / 2 - 187), (236, 124)))   # blue of Options
             pygame.draw.rect(self.window, (65, 100, 190),
                              ((self.width / 2 - 118, self.height / 2 - 62), (236, 124)))    # blue of Main Menu
             color = (255, 255, 255)
             smallfont_main_menu = pygame.font.SysFont('Comic Sans MS', 44)
             main_menu_text = smallfont_main_menu.render('Main Menu', True, color)
-            smallfont_options = pygame.font.SysFont('Comic Sans MS', 56)
-            options_text = smallfont_options.render('Options', True, color)
-            self.window.blit(options_text,
-                             (self.width / 2 - 120 + 10, self.height / 2 - 189 + 15))  # Options Button Text
+            # smallfont_options = pygame.font.SysFont('Comic Sans MS', 56)
+            # options_text = smallfont_options.render('Options', True, color)
+            # self.window.blit(options_text,
+            #                  (self.width / 2 - 120 + 10, self.height / 2 - 189 + 15))  # Options Button Text
+            startbutton = pygame.image.load("Assets/UI/start_btn.png")
+            self.window.blit(pygame.transform.scale(startbutton, (240, 378 / 3)),
+                             (self.width / 2 - 120, self.height / 2 - 189))
             self.window.blit(main_menu_text, (self.width / 2 - 120 + 10, self.height / 2 - 63 + 20))  # Main Menu Text
             exitbutton = pygame.image.load("Assets/UI/exit_btn.png")
             self.window.blit(pygame.transform.scale(exitbutton, (240, 378 / 3)),
@@ -141,20 +144,3 @@ class Game:
                 self.draw_hud()
                 pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 120, self.height - 60), (60, 60)))
                 self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
-                self.timer(True)
-
-    def timer(self, start):
-        smallfont = pygame.font.SysFont('Comic Sans MS', 30)
-        color = (255, 255, 255)
-        if start:
-            global start_time
-            start_time = pygame.time.get_ticks()
-        try:
-            passed_time = pygame.time.get_ticks() - start_time
-            timer = smallfont.render(str(int(passed_time / 1000)) + ' s', True, color)
-            self.window.blit(timer, (self.width - 110, -5))
-            pygame.display.update()
-        except:
-            no_timer = smallfont.render('no timer', True, color)
-            self.window.blit(no_timer, (self.width - 120, -5))
-            pygame.display.update()
