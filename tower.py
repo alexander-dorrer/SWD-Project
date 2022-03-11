@@ -14,10 +14,10 @@ class Tower:
         self.range = 200
         self.positions = []
 
-    def place(self, event):
+    def place(self, event, round_started):
         mouse = pygame.mouse.get_pos()
         font = pygame.font.Font('freesansbold.ttf', 32)
-        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840:
+        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840 and not round_started:
             chosen = True
             while chosen:
                 event_list = pygame.event.get()
@@ -37,6 +37,7 @@ class Tower:
                         else:
                             error_message = font.render('Error! Turm hier nicht platzierbar !!!', True, (255, 0, 0))
                             self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
+                            pygame.display.update()
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:               # Esc. is pressed
                             chosen = False                              # break loop
