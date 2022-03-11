@@ -13,6 +13,8 @@ class Tower:
         self.tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
         self.range = 200
         self.positions = []
+        self.collision_circle = pygame.image.load('assets/Towers&Projectiles/Collision_Circle/collision_circle.png')
+        self.mask = pygame.mask.from_surface(self.collision_circle)
 
     def place(self, event, round_started):
         mouse = pygame.mouse.get_pos()
@@ -64,8 +66,23 @@ class Tower:
 
     def sell(self):
         pass
+    def projectile(self,x, y, radius, color, facing):
+            self.x = x
+            self.y = y
+            self.radius = radius
+            self.color = color
+            self.facing = facing
+            self.vel = 8 * facing
 
-    def shoot(self):
+    def get_enemy_position(self):
+        pygame.sprite.spritecollide()
+
+
+    def draw_circle(self,win):
+        pygame.draw.circle(win, self.color,(self.x,self.y),self.radius)
+    def shoot(self,x,y):
+        self.x = x
+        self.y = y
         bullets = []
         for bullet in bullets:
             if bullet.x < self.width and bullet.y > 0:

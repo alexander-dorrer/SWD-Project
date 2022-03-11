@@ -51,15 +51,13 @@ while True:
     mouse = pygame.mouse.get_pos()
     for event in event_list:
         my_game.main_menu(event)
+        my_game.pause_game(event, mouse)
+        my_game.start_round(event, mouse)
         my_game.quit_game(event, False)
-        my_tower.place(event, round_started)
-        if not round_started:
-            round_started = my_game.start_round(event, mouse)
-        elif round_started:
-            round_started = my_game.pause_round(event, mouse)
-        if event.type == MOVEENEMY and round_started:
+        my_tower.place(event,round_started)
+        my_tower.draw_towers(event)
+        if event.type == MOVEENEMY:
             my_map.draw_map(my_level, display_surface)
-            my_tower.draw_towers(event)
             my_enemy.move()
         pygame.display.update()
     clock.tick(FPS)

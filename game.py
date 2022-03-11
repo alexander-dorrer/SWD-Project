@@ -121,7 +121,7 @@ class Game:
                             self.draw_game_menu(1, start_menu)
                     self.quit_game(event, False)
 
-    def pause_round(self, event, mouse):
+    def pause_game(self, event, mouse):
         pausebutton = pygame.image.load("Assets/pause.png")
         if event.type == pygame.MOUSEBUTTONUP and self.width - 60 <= mouse[0] <= self.width and self.height - 60 <= mouse[1] <= self.height:  # Click on Pause
             self.draw_hud()
