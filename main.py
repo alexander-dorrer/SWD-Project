@@ -55,9 +55,12 @@ while True:
         my_tower.place(event, round_started)
         my_tower.draw_towers(event)
         if not round_started:
-            round_started = my_game.start_round(event, mouse)
+            round_started, game_paused = my_game.start_round(event, mouse)
         elif round_started:
-            round_started = my_game.pause_round(event, mouse)
+            round_started, game_paused = my_game.pause_round(event, mouse)
+            if game_paused:     # draw tower-range if game is paused
+                my_tower.draw_range()
+                game_paused = not game_paused
         if event.type == MOVEENEMY and round_started:
             my_map.draw_map(my_level, display_surface)
             my_tower.draw_towers(event)

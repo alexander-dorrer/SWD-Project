@@ -62,7 +62,6 @@ class Enemy:
                     self.x += 4
                     self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                             (self.width, self.height)), (self.x, self.y))
-            pygame.display.update()
         if self.animation_count >= 6:
             self.animation_count = 0
         else:

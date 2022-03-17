@@ -33,6 +33,9 @@ class Tower:
                         position_y = (mouse_tower[1] % 60)
                         mouse_tower[1] -= ((position_y + 30) - 60)
                         mouse_tower = tuple(mouse_tower)
+                        surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
+                        pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
+                        self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
                         if mouse_tower not in self.positions:
                             self.positions.append(mouse_tower)
                             chosen = False
@@ -41,46 +44,43 @@ class Tower:
                             self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                             pygame.display.update()
                     elif events.type == pygame.KEYUP:
-                        if events.key == pygame.K_ESCAPE:               # Esc. is pressed
-                            chosen = False                              # break loop
+                        if events.key == pygame.K_ESCAPE:  # Esc. is pressed
+                            chosen = False  # break loop
                     Game.quit_game(self, events, False)
 
-    def draw_towers(self,event):
+    def draw_towers(self, event):
         for tower in self.positions:
-            self.window.blit(pygame.transform.scale(self.tower_base_img, (self.width, self.height)),
-                             (tower[0] - 30, tower[1] - 30))
-            self.window.blit(pygame.transform.scale(self.tower_head_img, (self.width, self.height)),
-                             (tower[0] - 30, tower[1] - 30))
             tower_base_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
             tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
             self.window.blit(pygame.transform.scale(tower_base_img, (self.width, self.height)),
-                                 (tower[0]-30, tower[1]-30))
+                             (tower[0] - 30, tower[1] - 30))
             self.window.blit(pygame.transform.scale(tower_head_img, (self.width, self.height)),
-                                 (tower[0]-30, tower[1]-30))
-            mouse_position = pygame.mouse.get_pos()
-            if event.type == pygame.MOUSEBUTTONUP and (tower[0] -30) <= mouse_position[0] <= (tower[0] + 30) and  (tower[1] -30) <= mouse_position [1] <= (tower[1] + 30):
-                surface = pygame.Surface((self.range *4,self.range*4),pygame.SRCALPHA,32)
-                pygame.draw.circle(surface,(50,50,50,100),(self.range,self.range),self.range,0)
-                self.window.blit(surface,(tower[0] - self.range, tower[1] - self.range))
-            pygame.display.update()
+                             (tower[0] - 30, tower[1] - 30))
+
+    def draw_range(self):
+        for tower in self.positions:
+            surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
+            pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
+            self.window.blit(surface, (tower[0] - self.range, tower[1] - self.range))
 
     def sell(self):
         pass
-    def projectile(self,x, y, radius, color, facing):
-            self.x = x
-            self.y = y
-            self.radius = radius
-            self.color = color
-            self.facing = facing
-            self.vel = 8 * facing
+
+    def projectile(self, x, y, radius, color, facing):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.color = color
+        self.facing = facing
+        self.vel = 8 * facing
 
     def get_enemy_position(self):
         pygame.sprite.spritecollide()
 
+    def draw_circle(self, win):
+        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
-    def draw_circle(self,win):
-        pygame.draw.circle(win, self.color,(self.x,self.y),self.radius)
-    def shoot(self,x,y):
+    def shoot(self, x, y):
         self.x = x
         self.y = y
         bullets = []

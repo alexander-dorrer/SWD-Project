@@ -127,9 +127,9 @@ class Game:
             self.draw_hud()
             pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 60, self.height - 60), (60, 60)))
             self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
-            return False
+            return False, True
         else:
-            return True
+            return True, False
 
     def quit_game(self, event, is_menu):
         if is_menu:
@@ -145,6 +145,6 @@ class Game:
             self.draw_hud()
             pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 120, self.height - 60), (60, 60)))
             self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
-            return True
+            return True, False
         else:
-            return False
+            return False, False
