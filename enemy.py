@@ -3,7 +3,6 @@ from distutils.spawn import spawn
 import pygame
 
 
-
 class Enemy:
 
     def __init__(self, window, path):
@@ -26,10 +25,8 @@ class Enemy:
         self.y = 0
         self.next_step = [self.path[self.step][0] * 60, self.path[self.step][1] * 60]
         self.enemy_mask_image = pygame.image.load('Assets/Enemy/WALK_000.png')
-        #self.enemy_sprite.image = self.enemy_mask_image
+        # self.enemy_sprite.image = self.enemy_mask_image
         self.enemy_mask = pygame.mask.from_surface(self.enemy_mask_image)
-
-
 
     def draw_enemy(self, spawn_point_x, spawn_point_y):
         self.x, self.y = spawn_point_x, spawn_point_y

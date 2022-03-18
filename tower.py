@@ -21,34 +21,44 @@ class Tower:
         font = pygame.font.Font('freesansbold.ttf', 32)
         if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840 and not round_started:
             chosen = True
+            tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
+            tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
+            pygame.draw.rect(self.window, (64, 191, 81), ((0, 780), (60, 60)))
+            self.window.blit(pygame.transform.scale(tower_base, (60, 60)), (0, 780))
+            self.window.blit(pygame.transform.scale(tower_head, (60, 60)), (0, 780))
+            pygame.display.update()
             while chosen:
                 event_list = pygame.event.get()
                 mouse_tower = pygame.mouse.get_pos()
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP:
-                        pygame.display.update()
-                        mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
-                        position_x = (mouse_tower[0] % 60)
-                        mouse_tower[0] -= ((position_x + 30) - 60)
-                        position_y = (mouse_tower[1] % 60)
-                        mouse_tower[1] -= ((position_y + 30) - 60)
-                        mouse_tower = tuple(mouse_tower)
-                        surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
-                        pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
-                        self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
-                        if mouse_tower not in self.positions:
-                            self.positions.append(mouse_tower)
-                            chosen = False
-                        else:
-                            error_message = font.render('Error! Turm hier nicht platzierbar !!!', True, (255, 0, 0))
-                            self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
-                            pygame.display.update()
+                        if 780 <= mouse_tower[1] <= 840:    # if clicked on HUD
+                            chosen = False      # toggle place tower off / break loop
+                        else:   # if clicked on map
+                            mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
+                            position_x = (mouse_tower[0] % 60)
+                            mouse_tower[0] -= ((position_x + 30) - 60)
+                            position_y = (mouse_tower[1] % 60)
+                            mouse_tower[1] -= ((position_y + 30) - 60)
+                            mouse_tower = tuple(mouse_tower)
+                            surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
+                            pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
+                            self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
+                            if mouse_tower not in self.positions:   # check if tower is already on position
+                                self.positions.append(mouse_tower)
+                                self.draw_towers()
+                                pygame.display.update()
+                                # chosen = False
+                            else:
+                                error_message = font.render('Error! Turm hier nicht platzierbar !!!', True, (255, 0, 0))
+                                self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
+                                pygame.display.update()
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
-                            chosen = False  # break loop
+                            chosen = False  # toggle place tower off / break loop
                     Game.quit_game(self, events, False)
 
-    def draw_towers(self, event):
+    def draw_towers(self):
         for tower in self.positions:
             tower_base_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
             tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
@@ -62,6 +72,7 @@ class Tower:
             surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
             pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
             self.window.blit(surface, (tower[0] - self.range, tower[1] - self.range))
+        self.draw_towers()
 
     def sell(self):
         pass

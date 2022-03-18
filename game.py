@@ -9,9 +9,6 @@ class Game:
         self.width = width
         self.height = height
 
-    def update(self):
-        pass
-
     def draw_hud(self):
         playbutton = pygame.image.load("Assets/play.png")
         pausebutton = pygame.image.load("Assets/pause.png")
@@ -68,9 +65,6 @@ class Game:
                 self.window.blit(text, (self.width / 2 - 120 + 10, self.height / 2 - 126 + levels / 6 * 315))
             pygame.display.update()
 
-    def update_hud(self):
-        pass
-
     def main_menu(self, event):
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
@@ -94,7 +88,7 @@ class Game:
                             running = 'level choice'
                             self.draw_game_menu(2, start_menu)
                         elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 189 <= \
-                                mouse[1] <= self.height / 2 - 63:  # Click on Options
+                                mouse[1] <= self.height / 2 - 63:  # Click on Start
                             return
                     elif event.type == pygame.KEYUP and not start_menu:
                         if event.key == pygame.K_ESCAPE:  # Esc. is pressed

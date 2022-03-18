@@ -1,4 +1,3 @@
-from faulthandler import disable
 import pygame
 from map import Map
 from enemy import Enemy
@@ -19,6 +18,8 @@ my_menu.game_menu(True)
 
 # Set Game Display
 display_surface = pygame.display.set_mode((width, height))
+
+# Create game object
 my_game = Game(display_surface, width, height)
 my_game.draw_hud()
 
@@ -33,10 +34,6 @@ FPS = 60
 clock = pygame.time.Clock()
 start_timer = False
 
-# Create game object
-my_game = Game(display_surface, width, height)
-my_game.draw_hud()
-
 # Create Enemy
 my_enemy = Enemy(display_surface, my_map.level1_path)
 my_enemy.draw_enemy(spawn_point[0], spawn_point[1])
@@ -45,6 +42,7 @@ pygame.time.set_timer(MOVEENEMY, int((1000/FPS*7)))
 
 # Create Tower
 my_tower = Tower(display_surface)
+
 # The main game loop
 while True:
     event_list = pygame.event.get()
@@ -53,7 +51,6 @@ while True:
         my_game.main_menu(event)
         my_game.quit_game(event, False)
         my_tower.place(event, round_started)
-        my_tower.draw_towers(event)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse)
         elif round_started:
@@ -63,7 +60,7 @@ while True:
                 game_paused = not game_paused
         if event.type == MOVEENEMY and round_started:
             my_map.draw_map(my_level, display_surface)
-            my_tower.draw_towers(event)
+            my_tower.draw_towers()
             my_enemy.move()
         pygame.display.update()
     clock.tick(FPS)
