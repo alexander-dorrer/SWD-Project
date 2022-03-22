@@ -1,6 +1,5 @@
 import pygame
 from game import Game
-from map import Map
 import math
 
 
@@ -49,6 +48,10 @@ class Tower:
                             pos_y = round((mouse_tower[1] / heigth) * 15) - 1
                             if landscape[pos_y][pos_x] == 2 or landscape[pos_y][pos_x] == 3 or landscape[pos_y][pos_x] == 4:
                                 error_message = font.render('Error! Turm nicht auf Sand plazierbar!', True, (255, 0, 0))
+                                self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
+                                pygame.display.update()
+                            elif landscape[pos_y][pos_x] == 1:
+                                error_message = font.render('Error! Turm nicht im Wasser plazierbar!', True, (255, 0, 0))
                                 self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                                 pygame.display.update()
                             elif mouse_tower not in self.positions:  # check if tower is already on position
