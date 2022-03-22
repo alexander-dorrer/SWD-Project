@@ -1,5 +1,7 @@
 import pygame
 from game import Game
+from map import Map
+import math
 
 
 class Tower:
@@ -16,7 +18,7 @@ class Tower:
         self.collision_circle = pygame.image.load('assets/Towers&Projectiles/Collision_Circle/collision_circle.png')
         self.mask = pygame.mask.from_surface(self.collision_circle)
 
-    def place(self, event, round_started):
+    def place(self, event, round_started, landscape):
         mouse = pygame.mouse.get_pos()
         font = pygame.font.Font('freesansbold.ttf', 32)
         if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840 and not round_started:
@@ -35,24 +37,28 @@ class Tower:
                         if 780 <= mouse_tower[1] <= 840:    # if clicked on HUD
                             chosen = False      # toggle place tower off / break loop
                         else:   # if clicked on map
+                            mouse_landscape = mouse_tower
                             mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
                             position_x = (mouse_tower[0] % 60)
                             mouse_tower[0] -= ((position_x + 30) - 60)
                             position_y = (mouse_tower[1] % 60)
                             mouse_tower[1] -= ((position_y + 30) - 60)
                             mouse_tower = tuple(mouse_tower)
-                            surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
-                            pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
-                            self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
-                            if mouse_tower not in self.positions:   # check if tower is already on position
+                            width, heigth = pygame.display.get_window_size()
+                            pos_x = math.ceil((mouse_landscape[0] / width) * 20) - 1
+                            pos_y = round((mouse_tower[1] / heigth) * 15) - 1
+                            if landscape[pos_y][pos_x] == 2 or landscape[pos_y][pos_x] == 3 or landscape[pos_y][pos_x] == 4:
+                                error_message = font.render('Error! Turm nicht auf Sand plazierbar!', True, (255, 0, 0))
+                                self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
+                                pygame.display.update()
+                            elif mouse_tower not in self.positions:  # check if tower is already on position
                                 self.positions.append(mouse_tower)
+                                surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
+                                pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
+                                self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
                                 self.draw_towers()
                                 pygame.display.update()
                                 # chosen = False
-                            else:
-                                error_message = font.render('Error! Turm hier nicht platzierbar !!!', True, (255, 0, 0))
-                                self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
-                                pygame.display.update()
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                             chosen = False  # toggle place tower off / break loop

@@ -25,21 +25,13 @@ class Game:
             pygame.draw.rect(self.window, (65, 100, 190),
                              ((0, 0), (self.width, self.height)))  # Full screen blue
         if depth_window == 1:
-            # pygame.draw.rect(self.window, (0, 0, 0),
-            #                  ((self.width / 2 - 120, self.height / 2 - 189), (240, 126)))   # border Options
             pygame.draw.rect(self.window, (0, 0, 0),
                              ((self.width / 2 - 120, self.height / 2 - 63), (240, 126)))  # border Main Menu
-            # pygame.draw.rect(self.window, (65, 100, 190),
-            #                  ((self.width / 2 - 118, self.height / 2 - 187), (236, 124)))   # blue of Options
             pygame.draw.rect(self.window, (65, 100, 190),
                              ((self.width / 2 - 118, self.height / 2 - 62), (236, 124)))  # blue of Main Menu
             color = (255, 255, 255)
             smallfont_main_menu = pygame.font.SysFont('Comic Sans MS', 44)
             main_menu_text = smallfont_main_menu.render('Main Menu', True, color)
-            # smallfont_options = pygame.font.SysFont('Comic Sans MS', 56)
-            # options_text = smallfont_options.render('Options', True, color)
-            # self.window.blit(options_text,
-            #                  (self.width / 2 - 120 + 10, self.height / 2 - 189 + 15))  # Options Button Text
             startbutton = pygame.image.load("Assets/UI/start_btn.png")
             self.window.blit(pygame.transform.scale(startbutton, (240, 378 / 3)),
                              (self.width / 2 - 120, self.height / 2 - 189))

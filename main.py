@@ -50,7 +50,7 @@ while True:
     for event in event_list:
         my_game.main_menu(event)
         my_game.quit_game(event, False)
-        my_tower.place(event, round_started)
+        my_tower.place(event, round_started, my_level)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse)
         elif round_started:
