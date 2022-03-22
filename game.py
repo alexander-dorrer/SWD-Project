@@ -9,7 +9,7 @@ class Game:
         self.width = width
         self.height = height
 
-    def draw_hud(self):
+    def draw_hud(self, money):
         playbutton = pygame.image.load("Assets/play.png")
         pausebutton = pygame.image.load("Assets/pause.png")
         tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
@@ -19,6 +19,10 @@ class Game:
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_base, (60, 60)), (0, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_head, (60, 60)), (0, self.height - 60))
+        font = pygame.font.SysFont('Comic Sans MS', 50)
+        message = font.render(str(money) + ' G', True, (255, 215, 0))
+        self.window.blit(message, (75, self.height - 65))
+        pygame.display.update()
 
     def draw_game_menu(self, depth_window, start_menu):
         if start_menu:
@@ -107,10 +111,11 @@ class Game:
                             self.draw_game_menu(1, start_menu)
                     self.quit_game(event, False)
 
-    def pause_round(self, event, mouse):
+    def pause_round(self, event, mouse, money):
         pausebutton = pygame.image.load("Assets/pause.png")
-        if event.type == pygame.MOUSEBUTTONUP and self.width - 60 <= mouse[0] <= self.width and self.height - 60 <= mouse[1] <= self.height:  # Click on Pause
-            self.draw_hud()
+        if event.type == pygame.MOUSEBUTTONUP and self.width - 60 <= mouse[0] <= self.width and self.height - 60 <= \
+                mouse[1] <= self.height:  # Click on Pause
+            self.draw_hud(money)
             pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 60, self.height - 60), (60, 60)))
             self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
             return False, True
@@ -125,10 +130,11 @@ class Game:
             pygame.quit()
             exit("X Exit")
 
-    def start_round(self, event, mouse):
+    def start_round(self, event, mouse, money):
         playbutton = pygame.image.load("Assets/play.png")
-        if event.type == pygame.MOUSEBUTTONUP and self.width - 120 <= mouse[0] <= self.width - 60 and self.height - 60 <= mouse[1] <= self.height:      # Click on Play
-            self.draw_hud()
+        if event.type == pygame.MOUSEBUTTONUP and self.width - 120 <= mouse[
+            0] <= self.width - 60 and self.height - 60 <= mouse[1] <= self.height:  # Click on Play
+            self.draw_hud(money)
             pygame.draw.rect(self.window, (64, 191, 81), ((self.width - 120, self.height - 60), (60, 60)))
             self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
             return True, False

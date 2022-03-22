@@ -13,15 +13,15 @@ round_started = False
 width = 1200
 height = 840
 display_surface = pygame.display.set_mode((width, height))
-my_menu = Game(display_surface, width, height)
-my_menu.game_menu(True)
 
 # Set Game Display
 display_surface = pygame.display.set_mode((width, height))
 
 # Create game object
+money = 1000
 my_game = Game(display_surface, width, height)
-my_game.draw_hud()
+my_game.game_menu(True)
+my_game.draw_hud(money)
 
 # Create Map
 my_map = Map()
@@ -50,11 +50,11 @@ while True:
     for event in event_list:
         my_game.main_menu(event)
         my_game.quit_game(event, False)
-        my_tower.place(event, round_started, my_level)
+        money = my_tower.place(event, round_started, my_level, money)
         if not round_started:
-            round_started, game_paused = my_game.start_round(event, mouse)
+            round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:
-            round_started, game_paused = my_game.pause_round(event, mouse)
+            round_started, game_paused = my_game.pause_round(event, mouse, money)
             if game_paused:     # draw tower-range if game is paused
                 my_tower.draw_range()
                 game_paused = not game_paused
