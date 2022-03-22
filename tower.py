@@ -45,12 +45,12 @@ class Tower:
                             mouse_tower = tuple(mouse_tower)
                             width, heigth = pygame.display.get_window_size()
                             pos_x = math.ceil((mouse_landscape[0] / width) * 20) - 1
-                            pos_y = round((mouse_tower[1] / heigth) * 15) - 1
-                            if landscape[pos_y][pos_x] == 2 or landscape[pos_y][pos_x] == 3 or landscape[pos_y][pos_x] == 4:
+                            pos_y = math.ceil((mouse_tower[1] / heigth) * 14) - 1
+                            if 2 <= landscape[pos_y][pos_x] <= 4:    # check if tower on sand
                                 error_message = font.render('Error! Turm nicht auf Sand plazierbar!', True, (255, 0, 0))
                                 self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                                 pygame.display.update()
-                            elif landscape[pos_y][pos_x] == 1:
+                            elif landscape[pos_y][pos_x] == 1:  # check if tower in water
                                 error_message = font.render('Error! Turm nicht im Wasser plazierbar!', True, (255, 0, 0))
                                 self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                                 pygame.display.update()
@@ -61,7 +61,6 @@ class Tower:
                                 self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
                                 self.draw_towers()
                                 pygame.display.update()
-                                # chosen = False
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                             chosen = False  # toggle place tower off / break loop
