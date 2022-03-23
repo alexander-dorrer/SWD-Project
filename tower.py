@@ -1,6 +1,5 @@
 import pygame
 from game import Game
-from map import Map
 import math
 
 
@@ -73,7 +72,6 @@ class Tower:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                             chosen = False  # toggle place tower off / break loop
                     Game.quit_game(self, events, False)
-
         return money
 
     def draw_towers(self):
@@ -110,8 +108,11 @@ class Tower:
                         mouse_tower[1] -= ((position_y + 30) - 60)
                         mouse_tower = tuple(mouse_tower)
                         if mouse_tower in self.positions:  # check if tower is on position
+                            cross = pygame.image.load("Assets/cross.png")
+                            self.window.blit(pygame.transform.scale(cross, (60, 60)), (mouse_tower[0] - 30, mouse_tower[1] - 30))
                             index_mouse_tower = self.positions.index(mouse_tower)
                             self.positions.pop(index_mouse_tower)
+                            pygame.display.update()
                             money = money + self.sell_cost
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
