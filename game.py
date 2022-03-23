@@ -64,12 +64,14 @@ class Game:
                 self.window.blit(text, (self.width / 2 - 120 + 10, self.height / 2 - 126 + levels / 6 * 315))
             pygame.display.update()
 
-    def main_menu(self, event):
+    def main_menu(self, event, level):
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                self.game_menu(False)
+                return self.game_menu(False, level)
+        else:
+            return level
 
-    def game_menu(self, start_menu):
+    def game_menu(self, start_menu, level):
         self.draw_game_menu(1, start_menu)
         menu = True
         running = 'main menu'
@@ -88,11 +90,12 @@ class Game:
                             self.draw_game_menu(2, start_menu)
                         elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 189 <= \
                                 mouse[1] <= self.height / 2 - 63:  # Click on Start
-                            return
+                            return level
+                        else:
+                            return level
                     elif event.type == pygame.KEYUP and not start_menu:
                         if event.key == pygame.K_ESCAPE:  # Esc. is pressed
-                            running = ''  # break loop
-                            menu = False
+                            return level
                     self.quit_game(event, False)
             while running == 'level choice':  # levels choice menu
                 event_list = pygame.event.get()
@@ -106,8 +109,7 @@ class Game:
                                 ########################################
                                 # implement actions on choice of level #
                                 ########################################
-                                running = ''
-                                menu = False
+                                return levels
                     elif event.type == pygame.KEYUP:
                         if event.key == pygame.K_ESCAPE:  # Esc. is pressed
                             running = 'main menu'  # break loop

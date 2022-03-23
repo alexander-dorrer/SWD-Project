@@ -12,7 +12,6 @@ round_started = False
 # Set Menu Display
 width = 1200
 height = 840
-display_surface = pygame.display.set_mode((width, height))
 
 # Set Game Display
 display_surface = pygame.display.set_mode((width, height))
@@ -20,7 +19,7 @@ display_surface = pygame.display.set_mode((width, height))
 # Create game object
 money = 1000
 my_game = Game(display_surface, width, height)
-my_game.game_menu(True)
+level = my_game.game_menu(True, 0)
 my_game.draw_hud(money)
 
 # Create Map
@@ -48,7 +47,7 @@ while True:
     event_list = pygame.event.get()
     mouse = pygame.mouse.get_pos()
     for event in event_list:
-        my_game.main_menu(event)
+        level = my_game.main_menu(event, level)
         my_game.quit_game(event, False)
         money = my_tower.place(event, round_started, my_level, money)
         money = my_tower.sell(event, mouse,  round_started, money)
