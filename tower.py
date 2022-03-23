@@ -1,5 +1,6 @@
 import pygame
 from game import Game
+from map import Map
 import math
 
 
@@ -8,8 +9,8 @@ class Tower:
         self.window = window
         self.height = 60
         self.width = 60
-        self.price = 500
-        self.sell_cost = 25
+        self.price = 100
+        self.sell_cost = self.price * 0.5
         self.tower_base_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
         self.tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
         self.range = 200
@@ -20,7 +21,7 @@ class Tower:
     def place(self, event, round_started, landscape, money):
         mouse = pygame.mouse.get_pos()
         font = pygame.font.Font('freesansbold.ttf', 32)
-        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840 and not round_started and money > self.price:
+        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840 and not round_started and money >= self.price:
             chosen = True
             tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
             tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
@@ -33,14 +34,14 @@ class Tower:
                 mouse_tower = pygame.mouse.get_pos()
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP:
-                        if money < 50:
+                        if 780 <= mouse_tower[1] <= 840:    # if clicked on HUD
+                            chosen = False      # toggle place tower off / break loop
+                        elif money < self.price:
                             error_message = font.render('keine Kohle mehr bro', True, (255, 0, 0))
                             self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                             pygame.display.update()
                             chosen = False
                             break
-                        if 780 <= mouse_tower[1] <= 840:    # if clicked on HUD
-                            chosen = False      # toggle place tower off / break loop
                         else:   # if clicked on map
                             mouse_landscape = mouse_tower
                             mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
@@ -91,9 +92,32 @@ class Tower:
             self.window.blit(surface, (tower[0] - self.range, tower[1] - self.range))
         self.draw_towers()
 
-    def sell(self):
-        return_cost = self.price - self.sell_cost
-        return return_cost
+    def sell(self, event, mouse,  round_started, money):
+        if event.type == pygame.MOUSEBUTTONUP and 250 <= mouse[0] <= 400 and 780 <= mouse[1] <= 840 and not round_started:
+            chosen = True
+            while chosen:
+                event_list = pygame.event.get()
+                mouse_tower = pygame.mouse.get_pos()
+                for events in event_list:
+                    if events.type == pygame.MOUSEBUTTONUP:
+                        if 780 <= mouse_tower[1] <= 840:  # if clicked on HUD
+                            chosen = False  # toggle place tower off / break loop
+                            break
+                        mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
+                        position_x = (mouse_tower[0] % 60)
+                        mouse_tower[0] -= ((position_x + 30) - 60)
+                        position_y = (mouse_tower[1] % 60)
+                        mouse_tower[1] -= ((position_y + 30) - 60)
+                        mouse_tower = tuple(mouse_tower)
+                        if mouse_tower in self.positions:  # check if tower is on position
+                            index_mouse_tower = self.positions.index(mouse_tower)
+                            self.positions.pop(index_mouse_tower)
+                            money = money + self.sell_cost
+                    elif events.type == pygame.KEYUP:
+                        if events.key == pygame.K_ESCAPE:  # Esc. is pressed
+                            chosen = False  # toggle place tower off / break loop
+                    Game.quit_game(self, events, False)
+        return money
 
     def projectile(self, x, y, radius, color, facing):
         self.x = x

@@ -51,6 +51,7 @@ while True:
         my_game.main_menu(event)
         my_game.quit_game(event, False)
         money = my_tower.place(event, round_started, my_level, money)
+        money = my_tower.sell(event, mouse,  round_started, money)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:

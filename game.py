@@ -19,9 +19,12 @@ class Game:
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_base, (60, 60)), (0, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_head, (60, 60)), (0, self.height - 60))
-        font = pygame.font.SysFont('Comic Sans MS', 50)
-        message = font.render(str(money) + ' G', True, (255, 215, 0))
-        self.window.blit(message, (75, self.height - 65))
+        gold = pygame.font.SysFont('Comic Sans MS', 50)
+        message_gold = gold.render(str(int(money)) + ' G', True, (255, 215, 0))
+        self.window.blit(message_gold, (75, self.height - 65))
+        sell = pygame.font.SysFont('Comic Sans MS', 50)
+        message_sell = sell.render('SELL', True, (255, 0, 0))
+        self.window.blit(message_sell, (250, self.height - 65))
         pygame.display.update()
 
     def draw_game_menu(self, depth_window, start_menu):
