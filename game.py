@@ -68,6 +68,8 @@ class Game:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 return self.game_menu(False, level)
+            else:
+                return level
         else:
             return level
 
