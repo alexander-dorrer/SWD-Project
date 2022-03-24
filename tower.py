@@ -13,7 +13,7 @@ class Tower:
         self.tower_base_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
         self.tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
         self.range = 200
-        self.damage = 10
+        self.damage = 5
         self.positions = []
         self.collision_circle = pygame.image.load('assets/Towers&Projectiles/Collision_Circle/collision_circle.png')
         self.mask = pygame.mask.from_surface(self.collision_circle)
@@ -132,9 +132,8 @@ class Tower:
     def enemy_in_range(self, pos_enemy):
         damage = 0
         for towers in self.positions:
-            if towers[0] + self.range >= pos_enemy[0] >= towers[0] - self.range:
-                if towers[1] + self.range >= pos_enemy[1] >= towers[1] - self.range:
-                    damage += self.shoot()
+            if towers[0] + self.range >= pos_enemy[0] >= towers[0] - self.range and towers[1] + self.range >= pos_enemy[1] >= towers[1] - self.range:
+                damage += self.shoot()
         return damage
 
     def draw_circle(self, win):

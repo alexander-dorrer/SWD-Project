@@ -66,6 +66,7 @@ class Enemy:
                 self.animation_count = 0
             else:
                 self.animation_count += 1
+            self.draw_health_bar()
 
     def get_shot(self, damage):
         if self.health_points > 0:
@@ -76,3 +77,7 @@ class Enemy:
 
     def position(self):
         return self.x, self.y
+
+    def draw_health_bar(self):
+        pygame.draw.rect(self.window, (64, 64, 64), ((self.x + 5, self.y - 5), (40, 4)))
+        pygame.draw.rect(self.window, (255, 0, 0), ((self.x + 5, self.y - 5), ((self.health_points / 100) * 40, 4)))
