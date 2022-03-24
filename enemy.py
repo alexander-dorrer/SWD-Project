@@ -79,5 +79,5 @@ class Enemy:
         return self.x, self.y
 
     def draw_health_bar(self):
-        pygame.draw.rect(self.window, (64, 64, 64), ((self.x + 5, self.y - 5), (40, 4)))
-        pygame.draw.rect(self.window, (255, 0, 0), ((self.x + 5, self.y - 5), ((self.health_points / 100) * 40, 4)))
+        pygame.draw.rect(self.window, (64, 64, 64), ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
+        pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1), ((self.health_points / 100) * self.width * 0.8, 4)))
