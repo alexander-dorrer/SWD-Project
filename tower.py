@@ -21,7 +21,8 @@ class Tower:
     def place(self, event, round_started, landscape, money):
         mouse = pygame.mouse.get_pos()
         font = pygame.font.Font('freesansbold.ttf', 32)
-        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840 and not round_started and money >= self.price:
+        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[
+            1] <= 840 and not round_started and money >= self.price:
             chosen = True
             tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
             tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
@@ -34,15 +35,15 @@ class Tower:
                 mouse_tower = pygame.mouse.get_pos()
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP:
-                        if 780 <= mouse_tower[1] <= 840:    # if clicked on HUD
-                            chosen = False      # toggle place tower off / break loop
+                        if 780 <= mouse_tower[1] <= 840:  # if clicked on HUD
+                            chosen = False  # toggle place tower off / break loop
                         elif money < self.price:
                             error_message = font.render('keine Kohle mehr bro', True, (255, 0, 0))
                             self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                             pygame.display.update()
                             chosen = False
                             break
-                        else:   # if clicked on map
+                        else:  # if clicked on map
                             mouse_landscape = mouse_tower
                             mouse_tower = list(mouse_tower)  # hier musss noch das Bild zentriert werden
                             position_x = (mouse_tower[0] % 60)
@@ -53,12 +54,13 @@ class Tower:
                             width, heigth = pygame.display.get_window_size()
                             pos_x = math.ceil((mouse_landscape[0] / width) * 20) - 1
                             pos_y = math.ceil((mouse_tower[1] / heigth) * 14) - 1
-                            if 2 <= landscape[pos_y][pos_x] <= 4:    # check if tower on sand
+                            if 2 <= landscape[pos_y][pos_x] <= 4:  # check if tower on sand
                                 error_message = font.render('Error! Turm nicht auf Sand plazierbar!', True, (255, 0, 0))
                                 self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                                 pygame.display.update()
                             elif landscape[pos_y][pos_x] == 1:  # check if tower in water
-                                error_message = font.render('Error! Turm nicht im Wasser plazierbar!', True, (255, 0, 0))
+                                error_message = font.render('Error! Turm nicht im Wasser plazierbar!', True,
+                                                            (255, 0, 0))
                                 self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
                                 pygame.display.update()
                             elif mouse_tower not in self.positions:  # check if tower is already on position
@@ -91,8 +93,9 @@ class Tower:
             self.window.blit(surface, (tower[0] - self.range, tower[1] - self.range))
         self.draw_towers()
 
-    def sell(self, event, mouse,  round_started, money):
-        if event.type == pygame.MOUSEBUTTONUP and 250 <= mouse[0] <= 400 and 780 <= mouse[1] <= 840 and not round_started:
+    def sell(self, event, mouse, round_started, money):
+        if event.type == pygame.MOUSEBUTTONUP and 250 <= mouse[0] <= 400 and 780 <= mouse[
+            1] <= 840 and not round_started:
             chosen = True
             while chosen:
                 event_list = pygame.event.get()
@@ -110,7 +113,8 @@ class Tower:
                         mouse_tower = tuple(mouse_tower)
                         if mouse_tower in self.positions:  # check if tower is on position
                             cross = pygame.image.load("Assets/cross.png")
-                            self.window.blit(pygame.transform.scale(cross, (60, 60)), (mouse_tower[0] - 30, mouse_tower[1] - 30))
+                            self.window.blit(pygame.transform.scale(cross, (60, 60)),
+                                             (mouse_tower[0] - 30, mouse_tower[1] - 30))
                             index_mouse_tower = self.positions.index(mouse_tower)
                             self.positions.pop(index_mouse_tower)
                             pygame.display.update()
@@ -130,12 +134,11 @@ class Tower:
         # self.vel = 8 * facing
         pass
 
-
     def enemy_in_range(self, pos_enemy):
         for towers in self.positions:
-            if towers[0] + self.range >= pos_enemy[0] >= towers[0] - self.range and towers[1] + self.range >= pos_enemy[1] >= towers[1] - self.range:
+            if towers[0] + self.range >= pos_enemy[0] >= towers[0] - self.range and towers[1] + self.range >= pos_enemy[
+                1] >= towers[1] - self.range:
                 return True
-
 
     def draw_circle(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
