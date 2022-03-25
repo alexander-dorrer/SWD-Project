@@ -65,6 +65,7 @@ while True:
             my_tower.draw_towers()
             my_enemy.move()
         if event.type == SHOOT and round_started:
-            my_enemy.get_shot(my_tower.shoot(my_enemy.position()))
+            my_enemy.get_shot(my_tower.shoot(my_enemy.position(), my_enemy.is_alive()))
+            my_tower.projectile(my_enemy.position(), my_enemy.is_alive())
         pygame.display.update()
     clock.tick(FPS)

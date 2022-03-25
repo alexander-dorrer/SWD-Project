@@ -125,28 +125,29 @@ class Tower:
                     Game.quit_game(self, events, False)
         return money
 
-    def projectile(self, pos_enemy):
+    def projectile(self, pos_enemy, enemy_is_alive):
         # self.x = x       x, y, radius, color, facing
         # self.y = y
         # self.radius = radius
         # self.color = color
         # self.facing = facing
         # self.vel = 8 * facing
-        pass
-
-    def enemy_in_range(self, pos_enemy):
         for towers in self.positions:
-            if towers[0] + self.range >= pos_enemy[0] >= towers[0] - self.range and towers[1] + self.range >= pos_enemy[
-                1] >= towers[1] - self.range:
-                return True
+            if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive:
+                pygame.draw.line(self.window, (255, 0, 0), towers, (pos_enemy[0] + 30, pos_enemy[1] + 30), 3)
+
+    def enemy_in_range(self, tower, pos_enemy):
+        if tower[0] + self.range >= pos_enemy[0] >= tower[0] - self.range and tower[1] + self.range >= pos_enemy[
+            1] >= tower[1] - self.range:
+            return True
 
     def draw_circle(self, win):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
-    def shoot(self, pos_enemy):
+    def shoot(self, pos_enemy, enemy_is_alive):
         damage = 0
-        if self.enemy_in_range(pos_enemy):
-            for towers in self.positions:
+        for towers in self.positions:
+            if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive:
                 damage += self.damage
         return damage
 

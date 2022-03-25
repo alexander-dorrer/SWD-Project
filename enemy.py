@@ -81,3 +81,6 @@ class Enemy:
     def draw_health_bar(self):
         pygame.draw.rect(self.window, (64, 64, 64), ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
         pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1), ((self.health_points / 100) * self.width * 0.8, 4)))
+
+    def is_alive(self):
+        return self.alive
