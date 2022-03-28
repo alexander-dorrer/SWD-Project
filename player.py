@@ -21,7 +21,5 @@ class Player:
         main_menu_text = smallfont_player_hp.render('Player HP: ' + str(self.health_points), True, color)
         self.window.blit(main_menu_text, (self.width - 250, 0))
 
-    def game_over(self):
-        if self.health_points <= 0:
-            pygame.quit()
-            exit("Game Over")
+    def player_hp(self):
+        return self.health_points

@@ -147,3 +147,8 @@ class Game:
             return True, False
         else:
             return False, False
+
+    def game_over(self, player_hp):
+        if player_hp <= 0:
+            pygame.quit()
+            exit("Game over!")

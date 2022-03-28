@@ -74,6 +74,6 @@ while True:
         my_player.display_hp()
         my_player.enemy_finished(my_enemy.in_goal_pos(round_started))
         pygame.display.update()
-        my_player.game_over()
+        my_game.game_over(my_player.player_hp())
     clock.tick(FPS)
 
