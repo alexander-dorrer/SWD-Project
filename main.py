@@ -3,6 +3,7 @@ from map import Map
 from enemy import Enemy
 from tower import Tower
 from game import Game
+from player import Player
 
 # Initialize pygame
 pygame.init()
@@ -22,6 +23,9 @@ my_game = Game(display_surface, width, height)
 level = my_game.game_menu(True, 0)
 my_game.draw_hud(money)
 
+# Create Player
+my_player = Player(display_surface, height, width)
+
 # Create Map
 my_map = Map()
 my_level = my_map.level1
@@ -37,7 +41,7 @@ start_timer = False
 my_enemy = Enemy(display_surface, my_map.level1_path)
 my_enemy.draw_enemy(spawn_point[0], spawn_point[1])
 MOVEENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(MOVEENEMY, int((1000/FPS*7)))
+pygame.time.set_timer(MOVEENEMY, int((1000 / FPS * 7)))
 
 # Create Tower
 my_tower = Tower(display_surface)
@@ -52,12 +56,12 @@ while True:
         level = my_game.main_menu(event, level)
         my_game.quit_game(event, False)
         money = my_tower.place(event, round_started, my_level, money)
-        money = my_tower.sell(event, mouse,  round_started, money)
+        money = my_tower.sell(event, mouse, round_started, money)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:
             round_started, game_paused = my_game.pause_round(event, mouse, money)
-            if game_paused:     # draw tower-range if game is paused
+            if game_paused:  # draw tower-range if game is paused
                 my_tower.draw_range()
                 game_paused = not game_paused
         if event.type == MOVEENEMY and round_started:
@@ -67,5 +71,9 @@ while True:
         if event.type == SHOOT and round_started:
             my_enemy.get_shot(my_tower.shoot(my_enemy.position(), my_enemy.is_alive()))
             my_tower.projectile(my_enemy.position(), my_enemy.is_alive())
+        my_player.display_hp()
+        my_player.enemy_finished(my_enemy.in_goal_pos(round_started))
         pygame.display.update()
+        my_player.game_over()
     clock.tick(FPS)
+

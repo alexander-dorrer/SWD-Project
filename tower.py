@@ -53,7 +53,7 @@ class Tower:
                             mouse_tower = tuple(mouse_tower)
                             width, heigth = pygame.display.get_window_size()
                             pos_x = math.ceil((mouse_landscape[0] / width) * 20) - 1
-                            pos_y = math.ceil((mouse_tower[1] / heigth) * 14) - 1
+                            pos_y = math.ceil((mouse_landscape[1] / heigth) * 14) - 1
                             if 2 <= landscape[pos_y][pos_x] <= 4:  # check if tower on sand
                                 error_message = font.render('Error! Turm nicht auf Sand plazierbar!', True, (255, 0, 0))
                                 self.window.blit(error_message, (mouse_tower[0] - 100, mouse_tower[1] - 32))
@@ -65,9 +65,11 @@ class Tower:
                                 pygame.display.update()
                             elif mouse_tower not in self.positions:  # check if tower is already on position
                                 self.positions.append(mouse_tower)
-                                surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
-                                pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
-                                self.window.blit(surface, (mouse_tower[0] - self.range, mouse_tower[1] - self.range))
+                                pygame.draw.lines(self.window, (0, 255, 0), True, (
+                                    (mouse_tower[0] - (self.range - 55), mouse_tower[1] - (self.range - 55)),
+                                    (mouse_tower[0] - (self.range - 55), mouse_tower[1] + (self.range - 55)),
+                                    (mouse_tower[0] + (self.range - 55), mouse_tower[1] + (self.range - 55)),
+                                    (mouse_tower[0] + (self.range - 55), mouse_tower[1] - (self.range - 55))), 3)
                                 self.draw_towers()
                                 money = money - self.price
                                 pygame.display.update()
@@ -88,9 +90,11 @@ class Tower:
 
     def draw_range(self):
         for tower in self.positions:
-            surface = pygame.Surface((self.range * 4, self.range * 4), pygame.SRCALPHA, 32)
-            pygame.draw.circle(surface, (50, 50, 50, 100), (self.range, self.range), self.range, 0)
-            self.window.blit(surface, (tower[0] - self.range, tower[1] - self.range))
+            pygame.draw.lines(self.window, (0, 255, 0), True, (
+                (tower[0] - (self.range - 55), tower[1] - (self.range - 55)),
+                (tower[0] - (self.range - 55), tower[1] + (self.range - 55)),
+                (tower[0] + (self.range - 55), tower[1] + (self.range - 55)),
+                (tower[0] + (self.range - 55), tower[1] - (self.range - 55))), 3)
         self.draw_towers()
 
     def sell(self, event, mouse, round_started, money):
@@ -134,7 +138,7 @@ class Tower:
         # self.vel = 8 * facing
         for towers in self.positions:
             if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive:
-                pygame.draw.line(self.window, (255, 0, 0), towers, (pos_enemy[0] + 30, pos_enemy[1] + 30), 3)
+                pygame.draw.line(self.window, (255, 0, 0), towers, (pos_enemy[0] + 30, pos_enemy[1] + 30), 5)
 
     def enemy_in_range(self, tower, pos_enemy):
         if tower[0] + self.range >= pos_enemy[0] >= tower[0] - self.range and tower[1] + self.range >= pos_enemy[
