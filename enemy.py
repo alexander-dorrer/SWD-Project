@@ -1,12 +1,9 @@
-from calendar import c
-from distutils.spawn import spawn
 import pygame
-import math
 
 
 class Enemy:
 
-    def __init__(self, window, path):
+    def __init__(self, window, path, health_points, speed):
         self.current_position = None
         self.goal_position = 0
         self.animation_count = 0
@@ -30,9 +27,10 @@ class Enemy:
         self.enemy_mask_image = pygame.image.load('Assets/Enemy/WALK_000.png')
         # self.enemy_sprite.image = self.enemy_mask_image
         self.enemy_mask = pygame.mask.from_surface(self.enemy_mask_image)
-        self.health_points = 100
+        self.health_points = health_points
         self.alive = True
         self.goal_position_reached = False
+        self.speed = speed
 
     def draw_enemy(self, spawn_point_x, spawn_point_y):
         self.x, self.y = spawn_point_x, spawn_point_y
@@ -50,20 +48,20 @@ class Enemy:
 
                 if self.current_position[0] != self.next_step[0]:
                     if self.current_position[0] > self.next_step[0]:
-                        self.y -= 4
+                        self.y -= self.speed
                         self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                                 (self.width, self.height)), (self.x, self.y))
                     elif self.current_position[0] < self.next_step[0]:
-                        self.y += 4
+                        self.y += self.speed
                         self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                                 (self.width, self.height)), (self.x, self.y))
                 elif self.current_position[1] != self.next_step[1]:
                     if self.current_position[1] > self.next_step[1]:
-                        self.x -= 4
+                        self.x -= self.speed
                         self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                                 (self.width, self.height)), (self.x, self.y))
                     elif self.current_position[1] < self.next_step[1]:
-                        self.x += 4
+                        self.x += self.speed
                         self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[self.animation_count],
                                                                 (self.width, self.height)), (self.x, self.y))
             if self.animation_count >= 6:
@@ -89,15 +87,15 @@ class Enemy:
     def position(self):
         return self.x, self.y
 
+    def is_alive(self):
+        return self.alive
+
     def draw_health_bar(self):
         if self.alive and not self.goal_position_reached:
             pygame.draw.rect(self.window, (64, 64, 64),
                              ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
             pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1),
                                                         ((self.health_points / 100) * self.width * 0.8, 4)))
-
-    def is_alive(self):
-        return self.alive
 
     def in_goal_pos(self, round_started):
         if self.current_position == self.goal_position and round_started and not self.goal_position_reached:  # check if enemy on goal pos

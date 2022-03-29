@@ -38,7 +38,8 @@ clock = pygame.time.Clock()
 start_timer = False
 
 # Create Enemy
-my_enemy = Enemy(display_surface, my_map.level1_path)
+enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]  # 0-11; 3 is standard
+my_enemy = Enemy(display_surface, my_map.level1_path, 100, enemy_speed[3])
 my_enemy.draw_enemy(spawn_point[0], spawn_point[1])
 MOVEENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(MOVEENEMY, int((1000 / FPS * 7)))
@@ -70,7 +71,7 @@ while True:
             my_enemy.move()
         if event.type == SHOOT and round_started:
             money, enemy_killed = my_enemy.get_shot(my_tower.shoot(my_enemy.position(), my_enemy.is_alive()), money)
-            if not my_enemy.is_alive() and enemy_killed:    # after killing enemy +50g for more enemies enemy_killed --> list
+            if not my_enemy.is_alive() and enemy_killed:  # after killing enemy +50g for more enemies enemy_killed --> list
                 my_game.draw_hud(money)
                 enemy_killed = False
             my_tower.projectile(my_enemy.position(), my_enemy.is_alive())
@@ -79,4 +80,3 @@ while True:
         pygame.display.update()
         my_game.game_over(my_player.player_hp())
     clock.tick(FPS)
-
