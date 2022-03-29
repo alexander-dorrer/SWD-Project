@@ -70,7 +70,7 @@ while True:
             my_enemy.move()
         if event.type == SHOOT and round_started:
             money, enemy_killed = my_enemy.get_shot(my_tower.shoot(my_enemy.position(), my_enemy.is_alive()), money)
-            if not my_enemy.is_alive() and enemy_killed:
+            if not my_enemy.is_alive() and enemy_killed:    # after killing enemy +50g for more enemies enemy_killed --> list
                 my_game.draw_hud(money)
                 enemy_killed = False
             my_tower.projectile(my_enemy.position(), my_enemy.is_alive())

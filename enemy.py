@@ -77,10 +77,12 @@ class Enemy:
             if self.health_points > 0 and not self.goal_position_reached:
                 self.health_points = self.health_points - damage
                 return money, False
-            if self.health_points <= 0:
+            elif self.health_points <= 0:
                 self.alive = False
-                money += 50
-                return money, True
+                money += 50  # if enemy is killed +50g
+                return money, True  # money (+50), and if enemy has been killed
+            else:
+                return money, False
         else:
             return money, False
 
@@ -88,9 +90,11 @@ class Enemy:
         return self.x, self.y
 
     def draw_health_bar(self):
-        if self.alive:
-            pygame.draw.rect(self.window, (64, 64, 64), ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
-            pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1), ((self.health_points / 100) * self.width * 0.8, 4)))
+        if self.alive and not self.goal_position_reached:
+            pygame.draw.rect(self.window, (64, 64, 64),
+                             ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
+            pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1),
+                                                        ((self.health_points / 100) * self.width * 0.8, 4)))
 
     def is_alive(self):
         return self.alive

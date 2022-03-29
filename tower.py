@@ -150,9 +150,11 @@ class Tower:
 
     def shoot(self, pos_enemy, enemy_is_alive):
         damage = 0
+        tower_has_target = False        # tower can only target one enemy
         for towers in self.positions:
-            if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive:
+            if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive and not tower_has_target:
                 damage += self.damage
+                tower_has_target = True
         return damage
 
     def animate(self):
