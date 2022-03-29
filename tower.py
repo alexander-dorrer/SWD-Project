@@ -4,41 +4,31 @@ import math
 
 
 class Tower:
-    def __init__(self, window,price,range,damage):
+    def __init__(self, window, price, range, damage, tower_base, tower_head, number_of_tower):
         self.window = window
         self.height = 60
         self.width = 60
         self.price = price
         self.sell_cost = self.price * 0.5
-        self.tower_base_img = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
-        self.tower_head_img = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
+        self.tower_base_img = tower_base
+        self.tower_head_img = tower_head
         self.range = range
         self.damage = damage
         self.positions = []
         self.collision_circle = pygame.image.load('assets/Towers&Projectiles/Collision_Circle/collision_circle.png')
         self.mask = pygame.mask.from_surface(self.collision_circle)
+        self.number_of_tower = number_of_tower
 
     def place(self, event, round_started, landscape, money):
         mouse = pygame.mouse.get_pos()
         font = pygame.font.Font('freesansbold.ttf', 32)
-        mouse_click_list = []
         chosen = False
-        if event.type == pygame.MOUSEBUTTONUP and 0 <= mouse[0] <= 60 and 780 <= mouse[
+        if event.type == pygame.MOUSEBUTTONUP and self.number_of_tower * 60 <= mouse[0] <= self.number_of_tower * 60 + 60 and 780 <= mouse[
             1] <= 840 and not round_started and money >= self.price:
             chosen = True
-            self.tower_base_img = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
-            self.tower_head_img = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
-            mouse_click_list.append(mouse)
-        elif event.type == pygame.MOUSEBUTTONUP and 420 <= mouse[0] <= 480 and 780 <= mouse[
-            1] <= 840 and not round_started and money >= self.price:
-            chosen = True
-            self.tower_base_img = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base.png")
-            self.tower_head_img = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
-            mouse_click_list.append(mouse)
-
-        pygame.draw.rect(self.window, (64, 191, 81), ((0, 780), (60, 60)))
-        self.window.blit(pygame.transform.scale(self.tower_base_img, (60, 60)), (0, 780))
-        self.window.blit(pygame.transform.scale(self.tower_head_img, (60, 60)), (0, 780))
+            pygame.draw.rect(self.window, (64, 191, 81), ((self.number_of_tower * 60, 780), (60, 60)))
+            self.window.blit(pygame.transform.scale(self.tower_base_img, (60, 60)), (self.number_of_tower * 60, 780))
+            self.window.blit(pygame.transform.scale(self.tower_head_img, (60, 60)), (self.number_of_tower * 60, 780))
         pygame.display.update()
         while chosen:
             event_list = pygame.event.get()
@@ -87,13 +77,10 @@ class Tower:
                     if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                         chosen = False  # toggle place tower off / break loop
                 Game.quit_game(self, events, False)
-           #mouse_click_list.clear()
         return money
 
     def draw_towers(self):
         for tower in self.positions:
-            # tower_base_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Base.png')
-            # tower_head_img = pygame.image.load('assets/Towers&Projectiles/Tower_1/Tower_1_Head.png')
             self.window.blit(pygame.transform.scale(self.tower_base_img, (self.width, self.height)),
                              (tower[0] - 30, tower[1] - 30))
             self.window.blit(pygame.transform.scale(self.tower_head_img, (self.width, self.height)),
@@ -161,7 +148,7 @@ class Tower:
 
     def shoot(self, pos_enemy, enemy_is_alive):
         damage = 0
-        tower_has_target = False        # tower can only target one enemy
+        tower_has_target = False  # tower can only target one enemy
         for towers in self.positions:
             if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive and not tower_has_target:
                 damage += self.damage
