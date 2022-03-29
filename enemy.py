@@ -72,11 +72,17 @@ class Enemy:
                 self.animation_count += 1
             self.draw_health_bar()
 
-    def get_shot(self, damage):
-        if self.health_points > 0 and not self.goal_position_reached:
-            self.health_points = self.health_points - damage
-        if self.health_points <= 0:
-            self.alive = False
+    def get_shot(self, damage, money):
+        if self.alive:
+            if self.health_points > 0 and not self.goal_position_reached:
+                self.health_points = self.health_points - damage
+                return money, False
+            if self.health_points <= 0:
+                self.alive = False
+                money += 50
+                return money, True
+        else:
+            return money, False
 
     def position(self):
         return self.x, self.y
@@ -91,7 +97,6 @@ class Enemy:
 
     def in_goal_pos(self, round_started):
         if self.current_position == self.goal_position and round_started and not self.goal_position_reached:  # check if enemy on goal pos
-            print(self.health_points)
             self.goal_position_reached = True
             return self.health_points
         else:

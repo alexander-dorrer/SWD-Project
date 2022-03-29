@@ -12,7 +12,7 @@ class Player:
 
     def enemy_finished(self, enemy_hp):
         if enemy_hp != 0:
-            print('Enemy health= ' + str(enemy_hp))
+            print('Enemy health = ' + str(enemy_hp))
             self.health_points -= enemy_hp
 
     def display_hp(self):

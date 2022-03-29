@@ -69,7 +69,10 @@ while True:
             my_tower.draw_towers()
             my_enemy.move()
         if event.type == SHOOT and round_started:
-            my_enemy.get_shot(my_tower.shoot(my_enemy.position(), my_enemy.is_alive()))
+            money, enemy_killed = my_enemy.get_shot(my_tower.shoot(my_enemy.position(), my_enemy.is_alive()), money)
+            if not my_enemy.is_alive() and enemy_killed:
+                my_game.draw_hud(money)
+                enemy_killed = False
             my_tower.projectile(my_enemy.position(), my_enemy.is_alive())
         my_player.display_hp()
         my_player.enemy_finished(my_enemy.in_goal_pos(round_started))
