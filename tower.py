@@ -5,6 +5,7 @@ import math
 
 class Tower:
     def __init__(self, window, price, range, damage, tower_base, tower_head, number_of_tower):
+        self.tower_has_target = False
         self.window = window
         self.height = 60
         self.width = 60
@@ -125,7 +126,7 @@ class Tower:
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
                             chosen = False  # toggle place tower off / break loop
-                    quit_game(events, False)
+                    game.quit_game(events, False)
         return money
 
     def projectile(self, pos_enemy, enemy_is_alive):
@@ -143,18 +144,28 @@ class Tower:
         if tower[0] + self.range >= pos_enemy[0] >= tower[0] - self.range and tower[1] + self.range >= pos_enemy[
             1] >= tower[1] - self.range:
             return True
+        else:
+            return False
 
-    def draw_circle(self, win):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+    # def draw_circle(self, win):
+    #     pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
-    def shoot(self, pos_enemy, enemy_is_alive):
+    def shoot(self, enemy_is_alive):
         damage = 0
-        tower_has_target = False  # tower can only target one enemy
         for towers in self.positions:
-            if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive and not tower_has_target:
+            if enemy_is_alive:     # tower can only target one enemy
                 damage += self.damage
-                tower_has_target = True
         return damage
 
     def animate(self):
         pass
+
+    def tower_target(self, pos_enemies):
+        for enemy in range(len(pos_enemies)):
+            for tower in self.positions:
+                if self.enemy_in_range(tower, pos_enemies[enemy]):
+                    self.tower_has_target = True
+                    return True, enemy
+        else:
+            self.tower_has_target = False
+            return False, 0    # need to return int if no target is selected
