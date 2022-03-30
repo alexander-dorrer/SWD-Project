@@ -2,7 +2,7 @@ import pygame
 from map import Map
 from enemy import Enemy
 from tower import Tower
-from game import Game
+import game
 from player import Player
 
 # Initialize pygame
@@ -60,14 +60,10 @@ while True:
     mouse = pygame.mouse.get_pos()
     for event in event_list:
         level = my_game.main_menu(event, level)
-        my_game.quit_game(event, False)
+        game.quit_game(event, False)
         for tower in tower_list:
             money = tower.place(event, round_started, my_level, money)
             money = tower.sell(event, mouse, round_started, money)
-        # money = my_tower.place(event, round_started, my_level, money)
-        # money = my_tower2.place(event, round_started, my_level, money)
-        # money = my_tower.sell(event, mouse, round_started, money)
-        # money = my_tower2.sell(event, mouse, round_started, money)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:
@@ -91,5 +87,5 @@ while True:
         my_player.display_hp()
         my_player.enemy_finished(my_enemy.in_goal_pos(round_started))
         pygame.display.update()
-        my_game.game_over(my_player.player_hp())
+        game.game_over(my_player.player_hp())
     clock.tick(FPS)

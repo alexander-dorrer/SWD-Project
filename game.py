@@ -1,6 +1,21 @@
 import pygame
 
 
+def quit_game(event, is_menu):
+    if is_menu:
+        pygame.quit()
+        exit("Mousebutton Exit")
+    if event.type == pygame.QUIT:  # Click on X (top right corner)
+        pygame.quit()
+        exit("X Exit")
+
+
+def game_over(player_hp):
+    if player_hp <= 0:
+        pygame.quit()
+        exit("Game over!")
+
+
 class Game:
     """Class to control Gameplay"""
 
@@ -90,7 +105,7 @@ class Game:
                     if event.type == pygame.MOUSEBUTTONUP:
                         if self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 + 63 <= mouse[
                             1] <= self.height / 2 + 189:  # Click on Quit
-                            self.quit_game(event, True)
+                            quit_game(event, True)
                         elif self.width / 2 - 120 <= mouse[0] <= self.width / 2 + 120 and self.height / 2 - 63 <= mouse[
                             1] <= self.height / 2 + 63:  # Click on Main Menu
                             running = 'level choice'
@@ -103,7 +118,7 @@ class Game:
                     elif event.type == pygame.KEYUP and not start_menu:
                         if event.key == pygame.K_ESCAPE:  # Esc. is pressed
                             return level
-                    self.quit_game(event, False)
+                    quit_game(event, False)
             while running == 'level choice':  # levels choice menu
                 event_list = pygame.event.get()
                 mouse = pygame.mouse.get_pos()
@@ -121,7 +136,7 @@ class Game:
                         if event.key == pygame.K_ESCAPE:  # Esc. is pressed
                             running = 'main menu'  # break loop
                             self.draw_game_menu(1, start_menu)
-                    self.quit_game(event, False)
+                    quit_game(event, False)
 
     def pause_round(self, event, mouse, money):
         pausebutton = pygame.image.load("Assets/pause.png")
@@ -134,14 +149,6 @@ class Game:
         else:
             return True, False
 
-    def quit_game(self, event, is_menu):
-        if is_menu:
-            pygame.quit()
-            exit("Mousebutton Exit")
-        if event.type == pygame.QUIT:  # Click on X (top right corner)
-            pygame.quit()
-            exit("X Exit")
-
     def start_round(self, event, mouse, money):
         playbutton = pygame.image.load("Assets/play.png")
         if event.type == pygame.MOUSEBUTTONUP and self.width - 120 <= mouse[
@@ -152,8 +159,3 @@ class Game:
             return True, False
         else:
             return False, False
-
-    def game_over(self, player_hp):
-        if player_hp <= 0:
-            pygame.quit()
-            exit("Game over!")
