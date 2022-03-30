@@ -93,7 +93,7 @@ while True:
         if event.type == SHOOT and round_started and pos_enemies:
             for tower in tower_list:
                 has_target, target, damage = tower.tower_target(pos_enemies)
-                if has_target:
+                if has_target and enemies:
                     money, enemy_killed = enemies[target].get_shot(
                         damage, money)
                     if not enemies[target].is_alive() and enemy_killed:  # after killing enemy +50g for more enemies enemy_killed --> list
