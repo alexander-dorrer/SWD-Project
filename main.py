@@ -68,6 +68,7 @@ while True:
         if event.type == CREATEENEMY and enemy_counter < 6 and round_started:
             enemies.append(Enemy(display_surface, my_map.level1_path, 100, enemy_speed[3]))
             enemies[enemy_counter].draw_enemy(spawn_point[0], spawn_point[1])
+            # if enemy_counter < len(enemies):
             enemy_counter += 1
         level = my_game.main_menu(event, level)
         for tower in tower_list:
@@ -89,18 +90,18 @@ while True:
             for enemy in enemies:
                 enemy.move()
                 pos_enemies.append(enemy.position())
-            # my_enemy.move()
         if event.type == SHOOT and round_started and pos_enemies:
             for tower in tower_list:
-                has_target, target = tower.tower_target(pos_enemies)
+                has_target, target, damage = tower.tower_target(pos_enemies)
                 if has_target:
                     money, enemy_killed = enemies[target].get_shot(
-                        tower.shoot(enemies[target].is_alive()), money)
+                        damage, money)
                     if not enemies[target].is_alive() and enemy_killed:  # after killing enemy +50g for more enemies enemy_killed --> list
                         enemies.pop(target)
                         my_game.draw_hud(money)
                         enemy_killed = False
-                    tower.projectile(pos_enemies[target], enemies[target].is_alive())
+                    if enemies:
+                        tower.projectile(pos_enemies[target], enemies[target].is_alive())
         my_player.display_hp()
         # my_player.enemy_finished(my_enemy.in_goal_pos(round_started))
         pygame.display.update()

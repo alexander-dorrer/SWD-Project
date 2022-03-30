@@ -150,22 +150,21 @@ class Tower:
     # def draw_circle(self, win):
     #     pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
-    def shoot(self, enemy_is_alive):
-        damage = 0
-        for towers in self.positions:
-            if enemy_is_alive:     # tower can only target one enemy
-                damage += self.damage
-        return damage
+    def shoot(self):
+        return self.damage
 
     def animate(self):
         pass
 
     def tower_target(self, pos_enemies):
+        damage = 0
         for enemy in range(len(pos_enemies)):
             for tower in self.positions:
                 if self.enemy_in_range(tower, pos_enemies[enemy]):
+                    damage += self.shoot()
                     self.tower_has_target = True
-                    return True, enemy
+            if damage != 0:
+                return True, enemy, damage
         else:
             self.tower_has_target = False
-            return False, 0    # need to return int if no target is selected
+            return False, 0, damage    # need to return int if no target is selected
