@@ -130,12 +130,6 @@ class Tower:
         return money
 
     def projectile(self, pos_enemy, enemy_is_alive):
-        # self.x = x       x, y, radius, color, facing
-        # self.y = y
-        # self.radius = radius
-        # self.color = color
-        # self.facing = facing
-        # self.vel = 8 * facing
         for towers in self.positions:
             if self.enemy_in_range(towers, pos_enemy) and enemy_is_alive:
                 pygame.draw.line(self.window, (255, 0, 0), towers, (pos_enemy[0] + 30, pos_enemy[1] + 30), 5)

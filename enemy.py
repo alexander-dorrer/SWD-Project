@@ -3,7 +3,7 @@ import pygame
 
 class Enemy:
 
-    def __init__(self, window, path, health_points, speed):
+    def __init__(self, window, path, health_points, speed, wait):
         self.current_position = None
         self.goal_position = 0
         self.animation_count = 0
@@ -31,6 +31,8 @@ class Enemy:
         self.alive = True
         self.goal_position_reached = False
         self.speed = speed
+        self.wait = wait
+        self.waited = 0
 
     def draw_enemy(self, spawn_point_x, spawn_point_y):
         self.x, self.y = spawn_point_x, spawn_point_y
@@ -38,7 +40,7 @@ class Enemy:
                          (self.x, self.y))
 
     def move(self):
-        if self.alive:
+        if self.alive and self.wait == self.waited:
             self.goal_position = [self.path[len(self.path) - 1][0] * 60, self.path[len(self.path) - 1][1] * 60]
             self.current_position = [self.y, self.x]
             if self.current_position != self.goal_position:
@@ -70,10 +72,18 @@ class Enemy:
                 self.animation_count += 1
             self.draw_health_bar()
 
+    def create_enemy(self):
+        if self.wait != self.waited:
+            self.waited += 1
+
     def get_shot(self, damage, money):
         if self.alive:
             if self.health_points > 0 and not self.goal_position_reached:
                 self.health_points = self.health_points - damage
+                if self.health_points <= 0:
+                    self.alive = False
+                    money += 50  # if enemy is killed +50g
+                    return money, True
                 return money, False
             elif self.health_points <= 0:
                 self.alive = False
