@@ -83,13 +83,13 @@ class Enemy:
                 self.health_points = self.health_points - damage
                 if self.health_points <= 0:
                     self.alive = False
-                    money += 50  # if enemy is killed +50g
+                    money += 10  # if enemy is killed +10g
                     return money, True
                 return money, False
             elif self.health_points <= 0:
                 self.alive = False
-                money += 50  # if enemy is killed +50g
-                return money, True  # money (+50), and if enemy has been killed
+                money += 10  # if enemy is killed +10g
+                return money, True  # money (+5), and if enemy has been killed
             else:
                 return money, False
         else:

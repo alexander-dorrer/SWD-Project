@@ -42,7 +42,7 @@ start_timer = False
 enemy_counter = 0
 number_of_enemies = 6
 enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20,]
-enemy_speed_index = 9
+enemy_speed_index = 1
 enemies = []
 enemy_hp = 100
 dead_enemies = []
@@ -59,9 +59,9 @@ tower_base_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base
 tower_head_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
 tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
 tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
-my_tower = Tower(display_surface, 100, 200, 5, tower_base_1, tower_head_1, 0)
-my_tower2 = Tower(display_surface, 150, 300, 10, tower_base_2, tower_head_2, 1)
-my_tower3 = Tower(display_surface, 150, 300, 10, tower_base_3, tower_head_3, 2)
+my_tower = Tower(display_surface, 100, 150, 5, tower_base_1, tower_head_1, 0)
+my_tower2 = Tower(display_surface, 200, 100, 10, tower_base_2, tower_head_2, 1)
+my_tower3 = Tower(display_surface, 300, 300, 10, tower_base_3, tower_head_3, 2)
 tower_list = [my_tower, my_tower2, my_tower3]
 SHOOT = pygame.USEREVENT + 2
 pygame.time.set_timer(SHOOT, int(1000))
@@ -110,8 +110,7 @@ while True:
                 if has_target and enemies:
                     money, enemy_killed = enemies[target].get_shot(
                         damage, money)
-                    if not enemies[
-                        target].is_alive() and enemy_killed:  # after killing enemy +50g for more enemies enemy_killed --> list
+                    if not enemies[target].is_alive() and enemy_killed: # after killing enemy +10g for more enemies enemy_killed --> list
                         dead_enemies.append(enemies.pop(target))
                         my_game.draw_hud(money)
                         enemy_killed = False
