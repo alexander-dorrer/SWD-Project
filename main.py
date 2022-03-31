@@ -20,7 +20,7 @@ display_surface = pygame.display.set_mode((width, height))
 
 # Create game object
 money = 1000
-my_game = Game(display_surface, width, height)
+my_game = Game(display_surface, width, height, 0)
 level = my_game.game_menu(True, 0)
 my_game.draw_hud(money)
 
@@ -40,13 +40,11 @@ start_timer = False
 
 # Create Enemy
 enemy_counter = 0
-number_of_enemies = 15
-enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60]  # 0-11; 3 is standard
+number_of_enemies = 6
+enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20,]
+enemy_speed_index = 9
 enemies = []
-for time in range(number_of_enemies):
-    enemies.append(Enemy(display_surface, my_map.level1_path, 100, enemy_speed[3], time))
-for enemy in enemies:
-    enemy.draw_enemy(spawn_point[0], spawn_point[1])
+enemy_hp = 100
 dead_enemies = []
 pos_enemies = []
 MOVEENEMY = pygame.USEREVENT + 1
@@ -72,6 +70,16 @@ pygame.time.set_timer(SHOOT, int(1000))
 while True:
     event_list = pygame.event.get()
     mouse = pygame.mouse.get_pos()
+
+    if my_game.is_wave_over(enemies) and round_started:
+        dead_enemies.clear()
+        for time in range(number_of_enemies):
+            enemies.append(Enemy(display_surface, my_map.level1_path, enemy_hp, enemy_speed[enemy_speed_index], time))
+        for enemy in enemies:
+            enemy.draw_enemy(spawn_point[0], spawn_point[1])
+        number_of_enemies, enemy_speed_index, enemy_hp, wave = my_game.start_new_wave(number_of_enemies, enemy_speed_index, enemy_hp)
+        round_started, game_paused = False, True
+
     for event in event_list:
         if event.type == CREATEENEMY and round_started:
             for enemy in enemies:
@@ -109,6 +117,7 @@ while True:
                         enemy_killed = False
                     if enemies:
                         tower.projectile(pos_enemies[target], enemies[target].is_alive())
+        my_game.display_wave()
         my_player.display_hp()
         for enemy in enemies:
             my_player.enemy_finished(enemy.in_goal_pos(round_started))

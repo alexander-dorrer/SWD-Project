@@ -67,7 +67,6 @@ class Tower:
                             pygame.display.update()
                         elif mouse_tower not in self.positions:  # check if tower is already on position
                             self.positions.append(mouse_tower)
-                            print(self.positions)
                             pygame.draw.lines(self.window, (0, 255, 0), True, (
                                 (mouse_tower[0] - (self.range - 55), mouse_tower[1] - (self.range - 55)),
                                 (mouse_tower[0] - (self.range - 55), mouse_tower[1] + (self.range - 55)),

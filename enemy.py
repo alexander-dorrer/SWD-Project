@@ -114,3 +114,4 @@ class Enemy:
             return self.health_points
         else:
             return 0
+
