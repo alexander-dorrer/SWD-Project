@@ -28,6 +28,7 @@ class Enemy:
         # self.enemy_sprite.image = self.enemy_mask_image
         self.enemy_mask = pygame.mask.from_surface(self.enemy_mask_image)
         self.health_points = health_points
+        self.start_hp = health_points
         self.alive = True
         self.goal_position_reached = False
         self.speed = speed
@@ -105,7 +106,7 @@ class Enemy:
             pygame.draw.rect(self.window, (64, 64, 64),
                              ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
             pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1),
-                                                        ((self.health_points / 100) * self.width * 0.8, 4)))
+                                                        (((self.health_points / self.start_hp) * self.width * 0.8), 4)))
 
     def in_goal_pos(self, round_started):
         if self.current_position == self.goal_position and round_started and not self.goal_position_reached:  # check if enemy on goal pos
