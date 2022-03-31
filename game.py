@@ -46,9 +46,6 @@ class Game:
         gold = pygame.font.SysFont('Comic Sans MS', 50)
         message_gold = gold.render(str(int(money)) + ' G', True, (255, 215, 0))
         self.window.blit(message_gold, (75, self.height - 65))
-        sell = pygame.font.SysFont('Comic Sans MS', 50)
-        message_sell = sell.render('SELL', True, (255, 0, 0))
-        self.window.blit(message_sell, (250, self.height - 65))
         pygame.display.update()
 
     def draw_game_menu(self, depth_window, start_menu):
