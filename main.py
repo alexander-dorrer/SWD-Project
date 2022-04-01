@@ -41,7 +41,7 @@ start_timer = False
 # Create Enemy
 enemy_counter = 0
 number_of_enemies = 6
-enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20,]
+enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20]
 enemy_speed_index = 1
 enemies = []
 enemy_hp = 100
@@ -60,8 +60,8 @@ tower_head_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head
 tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
 tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
 my_tower = Tower(display_surface, 100, 150, 5, tower_base_1, tower_head_1, 0)
-my_tower2 = Tower(display_surface, 200, 100, 10, tower_base_2, tower_head_2, 1)
-my_tower3 = Tower(display_surface, 300, 300, 10, tower_base_3, tower_head_3, 2)
+my_tower2 = Tower(display_surface, 200, 200, 10, tower_base_2, tower_head_2, 1)
+my_tower3 = Tower(display_surface, 300, 300, 15, tower_base_3, tower_head_3, 2)
 tower_list = [my_tower, my_tower2, my_tower3]
 SHOOT = pygame.USEREVENT + 2
 pygame.time.set_timer(SHOOT, int(1000))
@@ -78,7 +78,7 @@ while True:
         for enemy in enemies:
             enemy.draw_enemy(spawn_point[0], spawn_point[1])
         number_of_enemies, enemy_speed_index, enemy_hp, wave = my_game.start_new_wave(number_of_enemies, enemy_speed_index, enemy_hp)
-        round_started, game_paused = False, True
+        # round_started, game_paused = False, True
 
     for event in event_list:
         if event.type == CREATEENEMY and round_started:

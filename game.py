@@ -181,4 +181,4 @@ class Game:
         color = (255, 255, 255)
         smallfont_current_wave = pygame.font.SysFont('Comic Sans MS', 34)
         current_wave_text = smallfont_current_wave.render('Wave: ' + str(self.wave), True, color)
-        self.window.blit(current_wave_text, (10, 0))
+        self.window.blit(current_wave_text, (self.width - 185, 34))
