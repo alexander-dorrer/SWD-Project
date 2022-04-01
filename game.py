@@ -35,6 +35,7 @@ class Game:
         tower2_arm = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Arm.png")
         tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
         tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
+        gold_coin = pygame.image.load("Assets/UI/Icon_Coin.png")
         pygame.draw.rect(self.window, (65, 100, 190), ((0, self.height - 60), (self.width, 60)))
         self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
@@ -44,9 +45,10 @@ class Game:
         self.window.blit(pygame.transform.scale(tower2_head, (60, 60)), (60, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_base_3, (60, 60)), (120, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_head_3, (40, 40)), (120, self.height - 60))
+        self.window.blit(pygame.transform.scale(gold_coin, (60, 60)), (self.width - 180, self.height - 60))
         gold = pygame.font.SysFont('Comic Sans MS', 50)
-        message_gold = gold.render(str(int(money)) + ' G', True, (255, 215, 0))
-        self.window.blit(message_gold, (75, self.height - 65))
+        message_gold = gold.render(str(int(money)), True, (255, 215, 0))
+        self.window.blit(message_gold, (self.width - 300, self.height - 65))
         pygame.display.update()
 
     def draw_game_menu(self, depth_window, start_menu):
@@ -181,4 +183,4 @@ class Game:
         color = (255, 255, 255)
         smallfont_current_wave = pygame.font.SysFont('Comic Sans MS', 34)
         current_wave_text = smallfont_current_wave.render('Wave: ' + str(self.wave), True, color)
-        self.window.blit(current_wave_text, (self.width - 185, 34))
+        self.window.blit(current_wave_text, (self.width - 182, 34))

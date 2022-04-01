@@ -116,8 +116,9 @@ while True:
                         enemy_killed = False
                     if enemies:
                         tower.projectile(pos_enemies[target], enemies[target].is_alive())
-        my_game.display_wave()
-        my_player.display_hp()
+        if round_started:
+            my_game.display_wave()
+            my_player.display_hp()
         for enemy in enemies:
             my_player.enemy_finished(enemy.in_goal_pos(round_started))
         pygame.display.update()
