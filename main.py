@@ -59,10 +59,13 @@ tower_base_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base
 tower_head_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
 tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
 tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
-my_tower = Tower(display_surface, 100, 150, 5, tower_base_1, tower_head_1, 0)
-my_tower2 = Tower(display_surface, 200, 200, 10, tower_base_2, tower_head_2, 1)
-my_tower3 = Tower(display_surface, 300, 300, 15, tower_base_3, tower_head_3, 2)
-tower_list = [my_tower, my_tower2, my_tower3]
+# my_tower = Tower(display_surface, 100, 150, 5, tower_base_1, tower_head_1, 0)
+# my_tower2 = Tower(display_surface, 200, 200, 10, tower_base_2, tower_head_2, 1)
+# my_tower3 = Tower(display_surface, 300, 300, 15, tower_base_3, tower_head_3, 2)
+"""my_tower, my_tower2, my_tower3"""
+tower_list = []
+tower_list_old = []
+tower_positions = []
 SHOOT = pygame.USEREVENT + 2
 pygame.time.set_timer(SHOOT, int(1000))
 
@@ -85,9 +88,17 @@ while True:
             for enemy in enemies:
                 enemy.create_enemy()
         level = my_game.main_menu(event, level)
-        for tower in tower_list:
-            money = tower.place(event, round_started, my_level, money)
-            money = tower.sell(event, mouse, round_started, money)
+        towers_created, money = my_game.create_tower(event, my_level, money, tower_positions)
+        if towers_created:
+            for towers in towers_created:
+                tower_list.append(Tower(display_surface, towers[0], towers[1], towers[2], towers[3], towers[4], towers[5], towers[6]))
+        if tower_list != tower_list_old:
+            for tower in tower_list:
+                tower_positions.append(tower.get_position())
+            tower_list_old = tower_list
+        # for tower in tower_list:
+        #     money = tower.place(event, round_started, my_level, money)
+        #     money = tower.sell(event, mouse, round_started, money)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:
@@ -95,11 +106,12 @@ while True:
             if game_paused:  # draw tower-range if game is paused
                 for tower in tower_list:
                     tower.draw_range()
+                    print(tower_list + tower_list_old)
                 game_paused = not game_paused
         if event.type == MOVEENEMY and round_started:
             my_map.draw_map(my_level, display_surface)
             for tower in tower_list:
-                tower.draw_towers()
+                tower.draw_towers(tower.get_position())
             pos_enemies.clear()
             for enemy in enemies:
                 enemy.move()
@@ -107,7 +119,7 @@ while True:
         if event.type == SHOOT and round_started and pos_enemies:
             for tower in tower_list:
                 has_target, target, damage = tower.tower_target(pos_enemies)
-                if has_target and enemies:
+                if has_target and enemies and target < len(enemies):
                     money, enemy_killed = enemies[target].get_shot(
                         damage, money)
                     if not enemies[target].is_alive() and enemy_killed: # after killing enemy +10g for more enemies enemy_killed --> list
