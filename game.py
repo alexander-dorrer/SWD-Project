@@ -33,7 +33,6 @@ class Game:
         tower1_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
         tower2_base = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base.png")
         tower2_head = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
-        tower2_arm = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Arm.png")
         tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
         tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
         gold_coin = pygame.image.load("Assets/UI/Icon_Coin.png")
@@ -174,10 +173,10 @@ class Game:
 
     def start_new_wave(self, number_of_enemies, enemy_speed_index, enemy_hp):
         self.wave += 1
-        number_of_enemies += 1
+        number_of_enemies += 2
         if self.wave % 3 == 0 and enemy_speed_index < 9:
             enemy_speed_index += 1
-        enemy_hp += 10
+        enemy_hp += 15
         return number_of_enemies, enemy_speed_index, enemy_hp, self.wave
 
     def display_wave(self):
@@ -192,7 +191,7 @@ class Game:
         tower_price = 0
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840:
             tower_price = 100
-            tower_range = 150
+            tower_range = 300
             tower_damage = 5
             tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
             tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
@@ -271,6 +270,7 @@ class Game:
             return towers, money
 
     def sell_tower(self, event, mouse, round_started, position, money, sell_cost):
+        tower_sold = False
         mouse_tower = mouse
         mouse_tower = list(mouse_tower)
         position_x = (mouse_tower[0] % 60)
@@ -291,7 +291,7 @@ class Game:
                 for events in event_list:
                     if events.type == pygame.MOUSEBUTTONUP and events.button == 1:
                         if 780 <= mouse_tower_2[1] <= 840:  # if clicked on HUD
-                            return money, False  # toggle place tower off / break loop
+                            return money, tower_sold  # toggle place tower off / break loop
                         elif mouse_tower[0] <= mouse_tower_2[0] <= mouse_tower[0] + 50 and mouse_tower[1] + 5 <= \
                                 mouse_tower_2[1] <= mouse_tower[1] + 20:
                             cross = pygame.image.load("Assets/cross.png")
@@ -299,9 +299,10 @@ class Game:
                                              (mouse_tower[0] - 30, mouse_tower[1] - 30))
                             pygame.display.update()
                             money = money + sell_cost
-                            return money, True
+                            tower_sold = True
+                            return money, tower_sold
                     elif events.type == pygame.KEYUP:
                         if events.key == pygame.K_ESCAPE:  # Esc. is pressed
-                            return money, False  # toggle place tower off / break loop
+                            return money, tower_sold  # toggle place tower off / break loop
                     quit_game(events, False)
-        return money, False
+        return money, tower_sold

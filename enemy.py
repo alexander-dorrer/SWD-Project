@@ -111,7 +111,7 @@ class Enemy:
     def in_goal_pos(self, round_started):
         if self.current_position == self.goal_position and round_started and not self.goal_position_reached:  # check if enemy on goal pos
             self.goal_position_reached = True
-            return self.health_points
+            return self.health_points, True
         else:
-            return 0
+            return 0, False
 
