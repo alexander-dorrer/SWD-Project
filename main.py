@@ -96,9 +96,12 @@ while True:
             for tower in tower_list:
                 tower_positions.append(tower.get_position())
             tower_list_old = tower_list
-        # for tower in tower_list:
-        #     money = tower.place(event, round_started, my_level, money)
-        #     money = tower.sell(event, mouse, round_started, money)
+        for tower in tower_list:
+            money, sold = my_game.sell_tower(event, mouse, round_started, tower.position, money, tower.sell_cost)
+            if sold:
+                index_tower = tower_list.index(tower)
+                tower_list.pop(index_tower)
+                tower_positions.pop(index_tower)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:

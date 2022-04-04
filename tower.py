@@ -96,46 +96,46 @@ class Tower:
             (self.position[0] + (self.range - 55), self.position[1] - (self.range - 55))), 3)
         self.draw_towers(self.position)
 
-    def sell(self, event, mouse, round_started, money):
-        mouse_tower = mouse
-        mouse_tower = list(mouse_tower)
-        position_x = (mouse_tower[0] % 60)
-        mouse_tower[0] -= ((position_x + 30) - 60)
-        position_y = (mouse_tower[1] % 60)
-        mouse_tower[1] -= ((position_y + 30) - 60)
-        mouse_tower = tuple(mouse_tower)
-        if event.type == pygame.MOUSEBUTTONDOWN and not round_started and mouse_tower in self.position and event.button == 3:
-            sell = pygame.font.SysFont('Comic Sans MS', 20)
-            message_sell = sell.render('SELL', True, (255, 0, 0))
-            pygame.draw.rect(self.window, (65, 100, 190), ((mouse_tower[0], mouse_tower[1] + 5), (50, 20)))
-            self.window.blit(message_sell, (mouse_tower[0], mouse_tower[1]))
-            pygame.display.update()
-            chosen = True
-            while chosen:
-                event_list = pygame.event.get()
-                mouse_tower_2 = pygame.mouse.get_pos()
-                for events in event_list:
-                    if events.type == pygame.MOUSEBUTTONUP and events.button == 1:
-                        if 780 <= mouse_tower_2[1] <= 840:  # if clicked on HUD
-                            chosen = False  # toggle place tower off / break loop
-                            break
-                        elif mouse_tower[0] <= mouse_tower_2[0] <= mouse_tower[0] + 50 and mouse_tower[1] + 5 <= \
-                                mouse_tower_2[1] <= mouse_tower[1] + 20:
-                            cross = pygame.image.load("Assets/cross.png")
-                            self.window.blit(pygame.transform.scale(cross, (60, 60)),
-                                             (mouse_tower[0] - 30, mouse_tower[1] - 30))
-                            index_mouse_tower = self.position.index(mouse_tower)
-                            self.position.pop(index_mouse_tower)
-                            pygame.display.update()
-                            money = money + self.sell_cost
-                            chosen = False
-                            break
-                    elif events.type == pygame.KEYUP:
-                        if events.key == pygame.K_ESCAPE:  # Esc. is pressed
-                            chosen = False  # toggle place tower off / break loop
-                            break
-                    game.quit_game(events, False)
-        return money
+    # def sell(self, event, mouse, round_started, money):
+    #     mouse_tower = mouse
+    #     mouse_tower = list(mouse_tower)
+    #     position_x = (mouse_tower[0] % 60)
+    #     mouse_tower[0] -= ((position_x + 30) - 60)
+    #     position_y = (mouse_tower[1] % 60)
+    #     mouse_tower[1] -= ((position_y + 30) - 60)
+    #     mouse_tower = tuple(mouse_tower)
+    #     if event.type == pygame.MOUSEBUTTONDOWN and not round_started and mouse_tower in self.position and event.button == 3:
+    #         sell = pygame.font.SysFont('Comic Sans MS', 20)
+    #         message_sell = sell.render('SELL', True, (255, 0, 0))
+    #         pygame.draw.rect(self.window, (65, 100, 190), ((mouse_tower[0], mouse_tower[1] + 5), (50, 20)))
+    #         self.window.blit(message_sell, (mouse_tower[0], mouse_tower[1]))
+    #         pygame.display.update()
+    #         chosen = True
+    #         while chosen:
+    #             event_list = pygame.event.get()
+    #             mouse_tower_2 = pygame.mouse.get_pos()
+    #             for events in event_list:
+    #                 if events.type == pygame.MOUSEBUTTONUP and events.button == 1:
+    #                     if 780 <= mouse_tower_2[1] <= 840:  # if clicked on HUD
+    #                         chosen = False  # toggle place tower off / break loop
+    #                         break
+    #                     elif mouse_tower[0] <= mouse_tower_2[0] <= mouse_tower[0] + 50 and mouse_tower[1] + 5 <= \
+    #                             mouse_tower_2[1] <= mouse_tower[1] + 20:
+    #                         cross = pygame.image.load("Assets/cross.png")
+    #                         self.window.blit(pygame.transform.scale(cross, (60, 60)),
+    #                                          (mouse_tower[0] - 30, mouse_tower[1] - 30))
+    #                         index_mouse_tower = self.position.index(mouse_tower)
+    #                         self.position.pop(index_mouse_tower)
+    #                         pygame.display.update()
+    #                         money = money + self.sell_cost
+    #                         chosen = False
+    #                         break
+    #                 elif events.type == pygame.KEYUP:
+    #                     if events.key == pygame.K_ESCAPE:  # Esc. is pressed
+    #                         chosen = False  # toggle place tower off / break loop
+    #                         break
+    #                 game.quit_game(events, False)
+    #     return money
 
     def projectile(self, pos_enemy, enemy_is_alive):
         if self.enemy_in_range(pos_enemy) and enemy_is_alive:
