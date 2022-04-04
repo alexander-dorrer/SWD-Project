@@ -106,7 +106,6 @@ while True:
             if game_paused:  # draw tower-range if game is paused
                 for tower in tower_list:
                     tower.draw_range()
-                    print(tower_list + tower_list_old)
                 game_paused = not game_paused
         if event.type == MOVEENEMY and round_started:
             my_map.draw_map(my_level, display_surface)

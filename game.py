@@ -175,7 +175,7 @@ class Game:
     def start_new_wave(self, number_of_enemies, enemy_speed_index, enemy_hp):
         self.wave += 1
         number_of_enemies += 1
-        if self.wave % 3 == 0 and enemy_speed_index <= 9:
+        if self.wave % 3 == 0 and enemy_speed_index < 9:
             enemy_speed_index += 1
         enemy_hp += 10
         return number_of_enemies, enemy_speed_index, enemy_hp, self.wave
