@@ -83,7 +83,7 @@ while True:
                                                                                       enemy_speed_index, enemy_hp)
         # round_started, game_paused = False, True
         # """einkommentieren, wenn nach jeder Wave neu Start gedrückt werden soll"""
-
+        # fixing stuff
     for event in event_list:
         if event.type == CREATEENEMY and round_started:
             for enemy in enemies:
