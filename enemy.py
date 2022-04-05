@@ -102,7 +102,7 @@ class Enemy:
         return self.alive
 
     def draw_health_bar(self):
-        if self.alive and not self.goal_position_reached:
+        if self.alive and not self.goal_position_reached and self.start_hp != 0:
             pygame.draw.rect(self.window, (64, 64, 64),
                              ((self.x + self.width * 0.1, self.y - self.height * 0.1), (self.width * 0.8, 4)))
             pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1),

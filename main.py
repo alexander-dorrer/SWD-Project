@@ -137,8 +137,8 @@ while True:
             my_game.display_wave()
             my_player.display_hp()
         for enemy in enemies:
-            enemy_hp, enemy_in_goal_pos = enemy.in_goal_pos(round_started)
-            my_player.enemy_finished(enemy_hp)
+            enemy_hp_in_goal_pos, enemy_in_goal_pos = enemy.in_goal_pos(round_started)
+            my_player.enemy_finished(enemy_hp_in_goal_pos)
             if enemy_in_goal_pos:
                 if enemy_in_goal_pos:
                     dead_enemies.append(enemies.pop(enemies.index(enemy)))
