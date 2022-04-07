@@ -1,9 +1,8 @@
 import pygame
-import game
 
 
 class Tower:
-    def __init__(self, window, price, range, damage, tower_base, tower_head, number_of_tower, position):
+    def __init__(self, window, price: int, range: int, damage: int, tower_base, tower_head, number_of_tower: int, position: tuple[int, int]):
         self.tower_has_target = False
         self.window = window
         self.height = 60
@@ -82,11 +81,11 @@ class Tower:
     #             game.quit_game(events, False)
     #     return money, towers
 
-    def draw_towers(self, position):
+    def draw_towers(self):
         self.window.blit(pygame.transform.scale(self.tower_base_img, (self.width, self.height)),
-                         (position[0] - 30, position[1] - 30))
+                         (self.position[0] - 30, self.position[1] - 30))
         self.window.blit(pygame.transform.scale(self.tower_head_img, (self.width, self.height)),
-                         (position[0] - 30, position[1] - 30))
+                         (self.position[0] - 30, self.position[1] - 30))
 
     def draw_range(self):
         pygame.draw.lines(self.window, (0, 255, 0), True, (
@@ -94,7 +93,7 @@ class Tower:
             (self.position[0] - (self.range - 55), self.position[1] + (self.range - 55)),
             (self.position[0] + (self.range - 55), self.position[1] + (self.range - 55)),
             (self.position[0] + (self.range - 55), self.position[1] - (self.range - 55))), 3)
-        self.draw_towers(self.position)
+        self.draw_towers()
 
     # def sell(self, event, mouse, round_started, money):
     #     mouse_tower = mouse
@@ -137,24 +136,24 @@ class Tower:
     #                 game.quit_game(events, False)
     #     return money
 
-    def projectile(self, pos_enemy, enemy_is_alive):
+    def projectile(self, pos_enemy: tuple[int, int], enemy_is_alive: bool):
         if self.enemy_in_range(pos_enemy) and enemy_is_alive:
             pygame.draw.line(self.window, (255, 0, 0, 0.5), self.position, (pos_enemy[0] + 30, pos_enemy[1] + 30), 5)
 
-    def enemy_in_range(self, pos_enemy):
+    def enemy_in_range(self, pos_enemy: tuple[int, int]) -> bool:
         if self.position[0] + self.range >= pos_enemy[0] >= self.position[0] - self.range and self.position[1] + self.range >= pos_enemy[
             1] >= self.position[1] - self.range:
             return True
         else:
             return False
 
-    def shoot(self):
+    def shoot(self) -> int:
         return self.damage
 
     def animate(self):
         pass
 
-    def tower_target(self, pos_enemies):
+    def tower_target(self, pos_enemies: list) -> tuple[bool, int, int]:
         damage = 0
         for enemy in range(len(pos_enemies)):
             if self.enemy_in_range(pos_enemies[enemy]):
@@ -166,5 +165,5 @@ class Tower:
             self.tower_has_target = False
             return False, 0, damage  # need to return int if no target is selected
 
-    def get_position(self):
+    def get_position(self) -> tuple[int, int]:
         return self.position

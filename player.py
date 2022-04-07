@@ -4,13 +4,13 @@ import pygame
 class Player:
     """Player Class"""
 
-    def __init__(self, window, height, width):
+    def __init__(self, window, height: int, width: int):
         self.health_points = 100
         self.window = window
         self.height = height
         self.width = width
 
-    def enemy_finished(self, enemy_hp):
+    def enemy_finished(self, enemy_hp: float):
         if enemy_hp != 0:
             print('Enemy health = ' + str(enemy_hp))
             self.health_points -= enemy_hp
@@ -23,5 +23,5 @@ class Player:
         hp_value = smallfont_player_hp.render(" " + str(self.health_points), True, color)
         self.window.blit(hp_value, (self.width - 95, 0))
 
-    def player_hp(self):
+    def player_hp(self) -> float:
         return self.health_points

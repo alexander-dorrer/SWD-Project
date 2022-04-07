@@ -2,7 +2,7 @@ import pygame
 import math
 
 
-def quit_game(event, is_menu):
+def quit_game(event, is_menu: bool) -> None:
     if is_menu:
         pygame.quit()
         exit("Mousebutton Exit")
@@ -11,22 +11,30 @@ def quit_game(event, is_menu):
         exit("X Exit")
 
 
-def game_over(player_hp):
+def game_over(player_hp: float):
     if player_hp <= 0:
         pygame.quit()
         exit("Game over!")
 
 
+def is_wave_over(enemies) -> bool:
+    """checks if round is over"""
+    if len(enemies) == 0:
+        return True
+    else:
+        return False
+
+
 class Game:
     """Class to control Gameplay"""
 
-    def __init__(self, window, width, height, wave):
+    def __init__(self, window, width: int, height: int, wave: int):
         self.window = window
         self.width = width
         self.height = height
         self.wave = wave
 
-    def draw_hud(self, money):
+    def draw_hud(self, money: int):
         playbutton = pygame.image.load("Assets/play.png")
         pausebutton = pygame.image.load("Assets/pause.png")
         tower1_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
@@ -47,11 +55,11 @@ class Game:
         self.window.blit(pygame.transform.scale(tower_head_3, (40, 40)), (120, self.height - 60))
         self.window.blit(pygame.transform.scale(gold_coin, (60, 60)), (self.width - 180, self.height - 60))
         gold = pygame.font.SysFont('Comic Sans MS', 50)
-        message_gold = gold.render(str(int(money)), True, (255, 215, 0))
+        message_gold = gold.render(str(money), True, (255, 215, 0))
         self.window.blit(message_gold, (self.width - 300, self.height - 65))
         pygame.display.update()
 
-    def draw_game_menu(self, depth_window, start_menu):
+    def draw_game_menu(self, depth_window: int, start_menu: bool) -> None:
         if start_menu:
             pygame.draw.rect(self.window, (65, 100, 190),
                              ((0, 0), (self.width, self.height)))  # Full screen blue
@@ -88,7 +96,7 @@ class Game:
                 self.window.blit(text, (self.width / 2 - 120 + 10, self.height / 2 - 126 + levels / 6 * 315))
             pygame.display.update()
 
-    def main_menu(self, event, level):
+    def main_menu(self, event, level: int) -> int:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
                 return self.game_menu(False, level)
@@ -97,7 +105,7 @@ class Game:
         else:
             return level
 
-    def game_menu(self, start_menu, level):
+    def game_menu(self, start_menu: bool, level: int) -> int:
         self.draw_game_menu(1, start_menu)
         menu = True
         running = 'main menu'
@@ -142,7 +150,7 @@ class Game:
                             self.draw_game_menu(1, start_menu)
                     quit_game(event, False)
 
-    def pause_round(self, event, mouse, money):
+    def pause_round(self, event, mouse: tuple[int, int], money: int) -> tuple[bool, bool]:
         pausebutton = pygame.image.load("Assets/pause.png")
         if event.type == pygame.MOUSEBUTTONUP and self.width - 60 <= mouse[0] <= self.width and self.height - 60 <= \
                 mouse[1] <= self.height:  # Click on Pause
@@ -153,7 +161,7 @@ class Game:
         else:
             return True, False
 
-    def start_round(self, event, mouse, money):
+    def start_round(self, event, mouse: tuple[int, int], money: int) -> tuple[bool, bool]:
         playbutton = pygame.image.load("Assets/play.png")
         if event.type == pygame.MOUSEBUTTONUP and self.width - 120 <= mouse[
             0] <= self.width - 60 and self.height - 60 <= mouse[1] <= self.height:  # Click on Play
@@ -164,14 +172,7 @@ class Game:
         else:
             return False, False
 
-    def is_wave_over(self, enemies):
-        """checks if round is over"""
-        if len(enemies) == 0:
-            return True
-        else:
-            return False
-
-    def start_new_wave(self, number_of_enemies, enemy_speed_index, enemy_hp):
+    def start_new_wave(self, number_of_enemies: int, enemy_speed_index: int, enemy_hp: float) -> tuple[int, int, float, int]:
         self.wave += 1
         number_of_enemies += 2
         if self.wave % 3 == 0 and enemy_speed_index < 9:
@@ -185,10 +186,15 @@ class Game:
         current_wave_text = smallfont_current_wave.render('Wave ' + str(self.wave), True, color)
         self.window.blit(current_wave_text, (self.width - 182, 34))
 
-    def create_tower(self, event, landscape, money, tower_positions):
+    def create_tower(self, event, landscape, money: int, tower_positions: list) -> tuple | int:
         mouse = pygame.mouse.get_pos()
         towers = []
         tower_price = 0
+        tower_range = 0
+        tower_damage = 0
+        tower_base = None
+        tower_head = None
+        class_tower = 0
         if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and 0 <= mouse[0] <= 60 and 780 <= mouse[1] <= 840:
             tower_price = 100
             tower_range = 300
@@ -196,14 +202,16 @@ class Game:
             tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
             tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
             class_tower = 0
-        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and 60 <= mouse[0] <= 120 and 780 <= mouse[1] <= 840:
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and 60 <= mouse[0] <= 120 and 780 <= mouse[
+            1] <= 840:
             tower_price = 200
             tower_range = 200
             tower_damage = 10
             tower_base = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base.png")
             tower_head = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
             class_tower = 1
-        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and 120 <= mouse[0] <= 180 and 780 <= mouse[1] <= 840:
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and 120 <= mouse[0] <= 180 and 780 <= mouse[
+            1] <= 840:
             tower_price = 300
             tower_range = 150
             tower_damage = 15
@@ -269,7 +277,7 @@ class Game:
         else:
             return towers, money
 
-    def sell_tower(self, event, mouse, round_started, position, money, sell_cost):
+    def sell_tower(self, event, mouse: tuple[int, int], round_started: bool, position: tuple[int, int], money:  int, sell_cost: int) -> tuple[int, bool]:
         tower_sold = False
         mouse_tower = mouse
         mouse_tower = list(mouse_tower)

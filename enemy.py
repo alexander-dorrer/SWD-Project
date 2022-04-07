@@ -3,7 +3,7 @@ import pygame
 
 class Enemy:
 
-    def __init__(self, window, path, health_points, speed, wait):
+    def __init__(self, window, path: list, health_points: float, speed: int, wait: int):
         self.current_position = None
         self.goal_position = 0
         self.animation_count = 0
@@ -35,7 +35,7 @@ class Enemy:
         self.wait = wait
         self.waited = 0
 
-    def draw_enemy(self, spawn_point_x, spawn_point_y):
+    def draw_enemy(self, spawn_point_x: int, spawn_point_y: int):
         self.x, self.y = spawn_point_x, spawn_point_y
         self.window.blit(pygame.transform.scale(self.enemy_animation_imgs[0], (self.width, self.height)),
                          (self.x, self.y))
@@ -77,7 +77,7 @@ class Enemy:
         if self.wait != self.waited:
             self.waited += 1
 
-    def get_shot(self, damage, money):
+    def get_shot(self, damage: int, money: int) -> tuple[int, bool]:
         if self.alive:
             if self.health_points > 0 and not self.goal_position_reached:
                 self.health_points = self.health_points - damage
@@ -95,10 +95,10 @@ class Enemy:
         else:
             return money, False
 
-    def position(self):
+    def position(self) -> tuple[int, int]:
         return self.x, self.y
 
-    def is_alive(self):
+    def is_alive(self) -> bool:
         return self.alive
 
     def draw_health_bar(self):
@@ -108,10 +108,9 @@ class Enemy:
             pygame.draw.rect(self.window, (255, 0, 0), ((self.x + self.width * 0.1, self.y - self.height * 0.1),
                                                         (((self.health_points / self.start_hp) * self.width * 0.8), 4)))
 
-    def in_goal_pos(self, round_started):
+    def in_goal_pos(self, round_started: bool) -> tuple[float, bool]:
         if self.current_position == self.goal_position and round_started and not self.goal_position_reached:  # check if enemy on goal pos
             self.goal_position_reached = True
             return self.health_points, True
         else:
             return 0, False
-

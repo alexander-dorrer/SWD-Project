@@ -5,6 +5,7 @@ from tower import Tower
 import game
 from game import Game
 from player import Player
+import random
 
 # Initialize pygame
 pygame.init()
@@ -44,7 +45,7 @@ number_of_enemies = 6
 enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20]
 enemy_speed_index = 1
 enemies = []
-enemy_hp = 100
+enemy_hp = 85
 dead_enemies = []
 pos_enemies = []
 MOVEENEMY = pygame.USEREVENT + 1
@@ -74,14 +75,19 @@ pygame.time.set_timer(SHOOT, int(1000))
 while True:
     event_list = pygame.event.get()
     mouse = pygame.mouse.get_pos()
-    if my_game.is_wave_over(enemies) and round_started:
+    if game.is_wave_over(enemies) and round_started:
         dead_enemies.clear()
-        for time in range(number_of_enemies):
-            enemies.append(Enemy(display_surface, my_map.level1_path, enemy_hp, enemy_speed[enemy_speed_index], time))
-        for enemy in enemies:
-            enemy.draw_enemy(spawn_point[0], spawn_point[1])
         number_of_enemies, enemy_speed_index, enemy_hp, wave = my_game.start_new_wave(number_of_enemies,
                                                                                       enemy_speed_index, enemy_hp)
+        for time in range(number_of_enemies):
+            enemy_hp_new = enemy_hp * random.randint(6, 15) / 10
+            enemy_speed_index_new = enemy_speed_index + random.randint(1, 2)
+            if enemy_speed_index_new >= 6:
+                enemy_speed_index_new = 6
+            enemies.append(Enemy(display_surface, my_map.level1_path, enemy_hp_new, enemy_speed[enemy_speed_index_new], time))
+        for enemy in enemies:
+            enemy.draw_enemy(spawn_point[0], spawn_point[1])
+
         # round_started, game_paused = False, True
         # """einkommentieren, wenn nach jeder Wave neu Start gedrückt werden soll"""
 
@@ -118,7 +124,7 @@ while True:
         if event.type == MOVEENEMY and round_started:
             my_map.draw_map(my_level, display_surface)
             for tower in tower_list:
-                tower.draw_towers(tower.get_position())
+                tower.draw_towers()
             pos_enemies.clear()
             for enemy in enemies:
                 enemy.move()
@@ -134,7 +140,7 @@ while True:
                         dead_enemies.append(enemies.pop(target))
                         my_game.draw_hud(money)
                         enemy_killed = False
-                    if enemies:
+                    if enemies and target < len(enemies):
                         tower.projectile(pos_enemies[target], enemies[target].is_alive())
         if round_started:
             my_game.display_wave()
