@@ -182,7 +182,7 @@ class Game:
     def display_wave(self):
         color = (255, 255, 255)
         smallfont_current_wave = pygame.font.SysFont('Comic Sans MS', 34)
-        current_wave_text = smallfont_current_wave.render('Wave: ' + str(self.wave), True, color)
+        current_wave_text = smallfont_current_wave.render('Wave ' + str(self.wave), True, color)
         self.window.blit(current_wave_text, (self.width - 182, 34))
 
     def create_tower(self, event, landscape, money, tower_positions):

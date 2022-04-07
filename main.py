@@ -53,12 +53,12 @@ CREATEENEMY = pygame.USEREVENT + 3
 pygame.time.set_timer(CREATEENEMY, int(1500))
 
 # Create Tower
-tower_base_1 = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
-tower_head_1 = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
-tower_base_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base.png")
-tower_head_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
-tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
-tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
+# tower_base_1 = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
+# tower_head_1 = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
+# tower_base_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base.png")
+# tower_head_2 = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Head.png")
+# tower_base_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Base.png")
+# tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.png")
 # my_tower = Tower(display_surface, 100, 150, 5, tower_base_1, tower_head_1, 0)
 # my_tower2 = Tower(display_surface, 200, 200, 10, tower_base_2, tower_head_2, 1)
 # my_tower3 = Tower(display_surface, 300, 300, 15, tower_base_3, tower_head_3, 2)
@@ -66,6 +66,7 @@ tower_head_3 = pygame.image.load("Assets/Towers&Projectiles/Tower_3/Tower_3_Arm.
 tower_list = []
 tower_list_old = []
 tower_positions = []
+sold = False
 SHOOT = pygame.USEREVENT + 2
 pygame.time.set_timer(SHOOT, int(1000))
 
@@ -83,7 +84,7 @@ while True:
                                                                                       enemy_speed_index, enemy_hp)
         # round_started, game_paused = False, True
         # """einkommentieren, wenn nach jeder Wave neu Start gedrückt werden soll"""
-        # fixing stuff
+
     for event in event_list:
         if event.type == CREATEENEMY and round_started:
             for enemy in enemies:
@@ -103,7 +104,9 @@ while True:
             if sold:
                 index_tower = tower_list.index(tower)
                 tower_list.pop(index_tower)
-                tower_positions.pop(index_tower)
+                tower_positions.clear()
+                for towers in tower_list:
+                    tower_positions.append(towers.position)
         if not round_started:
             round_started, game_paused = my_game.start_round(event, mouse, money)
         elif round_started:

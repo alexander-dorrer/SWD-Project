@@ -19,10 +19,8 @@ class Player:
         hearth = pygame.image.load("Assets/UI/Icon_Hearth.png")
         color = (255, 255, 255)
         smallfont_player_hp = pygame.font.SysFont('Comic Sans MS', 34)
-        player_text = smallfont_player_hp.render('Player', True, color)
         self.window.blit(pygame.transform.scale(hearth, (30, 30)), (self.width - 125, 10))
-        hp_value = smallfont_player_hp.render(": " + str(self.health_points), True, color)
-        self.window.blit(player_text, (self.width - 225, 0))
+        hp_value = smallfont_player_hp.render(" " + str(self.health_points), True, color)
         self.window.blit(hp_value, (self.width - 95, 0))
 
     def player_hp(self):

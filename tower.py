@@ -139,7 +139,7 @@ class Tower:
 
     def projectile(self, pos_enemy, enemy_is_alive):
         if self.enemy_in_range(pos_enemy) and enemy_is_alive:
-            pygame.draw.line(self.window, (255, 0, 0), self.position, (pos_enemy[0] + 30, pos_enemy[1] + 30), 5)
+            pygame.draw.line(self.window, (255, 0, 0, 0.5), self.position, (pos_enemy[0] + 30, pos_enemy[1] + 30), 5)
 
     def enemy_in_range(self, pos_enemy):
         if self.position[0] + self.range >= pos_enemy[0] >= self.position[0] - self.range and self.position[1] + self.range >= pos_enemy[
