@@ -11,10 +11,10 @@ def quit_game(event, is_menu: bool) -> None:
         exit("X Exit")
 
 
-def game_over(player_hp: float):
+def game_over(player_hp: float,surface):
     if player_hp <= 0:
-        pygame.quit()
-        exit("Game over!")
+        player_hp = 0
+        return player_hp
 
 
 def is_wave_over(enemies) -> bool:
@@ -37,6 +37,7 @@ class Game:
     def draw_hud(self, money: int):
         playbutton = pygame.image.load("Assets/play.png")
         pausebutton = pygame.image.load("Assets/pause.png")
+        restartbutton = pygame.image.load("Assets/restart.png")
         tower1_base = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Base.png")
         tower1_head = pygame.image.load("Assets/Towers&Projectiles/Tower_1/Tower_1_Head.png")
         tower2_base = pygame.image.load("Assets/Towers&Projectiles/Tower_2/Tower_2_Base.png")
@@ -47,16 +48,17 @@ class Game:
         pygame.draw.rect(self.window, (65, 100, 190), ((0, self.height - 60), (self.width, 60)))
         self.window.blit(pygame.transform.scale(pausebutton, (60, 60)), (self.width - 60, self.height - 60))
         self.window.blit(pygame.transform.scale(playbutton, (60, 60)), (self.width - 120, self.height - 60))
+        self.window.blit(pygame.transform.scale(restartbutton,(60, 60)),(self.width - 180,self.height - 60))
         self.window.blit(pygame.transform.scale(tower1_base, (60, 60)), (0, self.height - 60))
         self.window.blit(pygame.transform.scale(tower1_head, (60, 60)), (0, self.height - 60))
         self.window.blit(pygame.transform.scale(tower2_base, (60, 60)), (60, self.height - 60))
         self.window.blit(pygame.transform.scale(tower2_head, (60, 60)), (60, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_base_3, (60, 60)), (120, self.height - 60))
         self.window.blit(pygame.transform.scale(tower_head_3, (40, 40)), (120, self.height - 60))
-        self.window.blit(pygame.transform.scale(gold_coin, (60, 60)), (self.width - 180, self.height - 60))
+        self.window.blit(pygame.transform.scale(gold_coin, (60, 60)), (self.width - 240, self.height - 60))
         gold = pygame.font.SysFont('Comic Sans MS', 50)
         message_gold = gold.render(str(money), True, (255, 215, 0))
-        self.window.blit(message_gold, (self.width - 300, self.height - 65))
+        self.window.blit(message_gold, (self.width - 400, self.height - 65))
         pygame.display.update()
 
     def draw_game_menu(self, depth_window: int, start_menu: bool) -> None:
@@ -161,6 +163,9 @@ class Game:
         else:
             return True, False
 
+    def pause_round_after_go(self) :
+            return False, True
+
     def start_round(self, event, mouse: tuple[int, int], money: int) -> tuple[bool, bool]:
         playbutton = pygame.image.load("Assets/play.png")
         if event.type == pygame.MOUSEBUTTONUP and self.width - 120 <= mouse[
@@ -172,12 +177,32 @@ class Game:
         else:
             return False, False
 
-    def start_new_wave(self, number_of_enemies: int, enemy_speed_index: int, enemy_hp: float) -> tuple[int, int, float, int]:
-        self.wave += 1
-        number_of_enemies += 2
-        if self.wave % 3 == 0 and enemy_speed_index < 9:
-            enemy_speed_index += 1
-        enemy_hp += 15
+    # def game_over(self,player_hp: float, surface):
+    #     if player_hp <= 0:
+    #         # game_over_tag = pygame.image.load("Assets/game_over.png")
+    #         # game_over_button = pygame.image.load("Assets/restart.png")
+    #         # surface.blit(pygame.transform.scale(game_over_tag,(400,150)),(self.width -800,self.height- 600))
+    #         # surface.blit(pygame.transform.scale(game_over_button,(400,150)),(self.width -800,self.height- 400))
+    #         # pygame.display.update()
+    #         # pygame.quit()
+    #         # exit("Game over!")
+
+    # def restart_game(self,event,mouse: tuple[int,int]:
+    #     restart_button = pygame.image.load("Assets/restartpng.png")
+    #     if event.type == pygame.MOUSEBUTTONDOWN and self.width - 180 <= mouse[
+    #     if event.type == pygame.MOUSEBUTTONDOWN and self.width - 180 <= mouse[
+    #         0] <= self.width - 60 and self.height - 60 <= mouse[1] <= self.height:
+
+    def start_new_wave(self, number_of_enemies: int, enemy_speed_index: int, enemy_hp: float,restart) -> tuple[int, int, float, int,bool]:
+        if restart == False:
+            self.wave += 1
+            number_of_enemies += 2
+            if self.wave % 3 == 0 and enemy_speed_index < 9:
+                enemy_speed_index += 1
+            enemy_hp += 15
+        else:
+            self.wave = 1
+            number_of_enemies = 6
         return number_of_enemies, enemy_speed_index, enemy_hp, self.wave
 
     def display_wave(self):
@@ -185,6 +210,7 @@ class Game:
         smallfont_current_wave = pygame.font.SysFont('Comic Sans MS', 34)
         current_wave_text = smallfont_current_wave.render('Wave ' + str(self.wave), True, color)
         self.window.blit(current_wave_text, (self.width - 182, 34))
+
 
     def create_tower(self, event, landscape, money: int, tower_positions: list) -> tuple | int:
         mouse = pygame.mouse.get_pos()

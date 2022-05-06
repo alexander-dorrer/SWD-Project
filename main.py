@@ -1,3 +1,5 @@
+import tkinter.messagebox
+
 import pygame
 from map import Map
 from enemy import Enemy
@@ -6,11 +8,13 @@ import game
 from game import Game
 from player import Player
 import random
+from tkinter import messagebox
 
 # Initialize pygame
 pygame.init()
 pygame.display.set_caption("nicht geil aber es funktioniert manchmal")
 round_started = False
+restart = False
 
 # Set Menu Display
 width = 1200
@@ -18,6 +22,7 @@ height = 840
 
 # Set Game Display
 display_surface = pygame.display.set_mode((width, height))
+
 
 # Create game object
 money = 1000
@@ -42,8 +47,8 @@ start_timer = False
 # Create Enemy
 enemy_counter = 0
 number_of_enemies = 6
-enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20]
-enemy_speed_index = 1
+enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 300]
+enemy_speed_index = 0
 enemies = []
 enemy_hp = 85
 dead_enemies = []
@@ -78,12 +83,12 @@ while True:
     if game.is_wave_over(enemies) and round_started:
         dead_enemies.clear()
         number_of_enemies, enemy_speed_index, enemy_hp, wave = my_game.start_new_wave(number_of_enemies,
-                                                                                      enemy_speed_index, enemy_hp)
+                                                                                      enemy_speed_index, enemy_hp,restart)
         for time in range(number_of_enemies):
             enemy_hp_new = enemy_hp * random.randint(6, 15) / 10
             enemy_speed_index_new = enemy_speed_index + random.randint(1, 2)
-            if enemy_speed_index_new >= 6:
-                enemy_speed_index_new = 6
+            if enemy_speed_index_new >= 9:
+                enemy_speed_index_new = 9
             enemies.append(Enemy(display_surface, my_map.level1_path, enemy_hp_new, enemy_speed[enemy_speed_index_new], time))
         for enemy in enemies:
             enemy.draw_enemy(spawn_point[0], spawn_point[1])
@@ -121,6 +126,58 @@ while True:
                 for tower in tower_list:
                     tower.draw_range()
                 game_paused = not game_paused
+            if event.type == pygame.MOUSEBUTTONUP and width - 180 <= mouse[
+            0] <= width - 120 and height - 60 <= mouse[1] <= height:
+                tower_list = []
+                tower_list_old = []
+                tower_positions = []
+                sold = False
+                enemy_counter = 0
+                enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20]
+                enemy_speed_index = 1
+                enemies = []
+                enemy_hp = 85
+                dead_enemies = []
+                pos_enemies = []
+                money = 1000
+                my_game.draw_hud(money)
+                my_player.health_points = 100
+                restart = True
+            if player_hp == 0:
+                game_over = True
+                my_game.pause_round_after_go()
+                game_over_tag = pygame.image.load("Assets/game_over.png")
+                game_over_button = pygame.image.load("Assets/restart.png")
+                display_surface.blit(pygame.transform.scale(game_over_tag, (400, 150)), (width - 800, height - 600))
+                display_surface.blit(pygame.transform.scale(game_over_button, (400, 150)),
+                             (width - 800, height - 400))
+                pygame.display.update()
+                while game_over:
+                    event_list = pygame.event.get()
+                    mouse = pygame.mouse.get_pos()
+                    for event in event_list:
+                        if event.type == pygame.MOUSEBUTTONUP and width - 800 <= mouse[
+                            0] <= width - 400 and height - 400 <= mouse[1] <= height - 250:
+                            tower_list = []
+                            tower_list_old = []
+                            tower_positions = []
+                            sold = False
+                            enemy_counter = 0
+                            enemy_speed = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20]
+                            enemy_speed_index = 1
+                            enemies = []
+                            enemy_hp = 85
+                            dead_enemies = []
+                            pos_enemies = []
+                            money = 1000
+                            my_game.draw_hud(money)
+                            restart = True
+                            my_player.health_points = 100
+                            game_over = False
+                            break
+                        game.quit_game(event,False)
+
+
         if event.type == MOVEENEMY and round_started:
             my_map.draw_map(my_level, display_surface)
             for tower in tower_list:
@@ -152,6 +209,6 @@ while True:
                 if enemy_in_goal_pos:
                     dead_enemies.append(enemies.pop(enemies.index(enemy)))
         pygame.display.update()
-        game.game_over(my_player.player_hp())
+        player_hp = game.game_over(my_player.health_points,display_surface)
         game.quit_game(event, False)
     clock.tick(FPS)
