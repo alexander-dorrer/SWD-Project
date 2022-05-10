@@ -212,7 +212,7 @@ class Game:
         self.window.blit(current_wave_text, (self.width - 182, 34))
 
 
-    def create_tower(self, event, landscape, money: int, tower_positions: list) -> tuple | int:
+    def create_tower(self, event, landscape, money: int, tower_positions: list) -> tuple[int]:
         mouse = pygame.mouse.get_pos()
         towers = []
         tower_price = 0
